@@ -1,0 +1,14 @@
+#game-area {
+  height: 12em;
+  display: flex;
+
+  .player {
+    display: flex;
+    flex-direction: column;
+
+    .player-name {
+      text-align: center;
+      font-weight: bold;
+    }
+  }
+}

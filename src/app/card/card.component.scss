@@ -1,0 +1,106 @@
+.flip-container {
+  perspective: 1000px;
+  width: 7rem;
+  display: inline-block;
+
+  &.in-deck {
+    cursor: pointer;
+    transition: 0.2s;
+
+    &:hover {
+      transform: translateY(-2rem) rotate(15deg);
+    }
+  }
+}
+
+.flip-container.flip .card {
+  transform: rotateY(180deg);
+}
+
+.card {
+  transition: 0.6s;
+  transform-style: preserve-3d;
+  position: relative;
+
+  .front, .back {
+    backface-visibility: hidden;
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    width: 5.5rem;
+    border: 10px solid #000000;
+    border-radius: 5px;
+    text-align: center;
+    box-shadow: 1px 1px 1px #000000;
+  }
+
+  .front {
+    z-index: 2;
+    transform: rotateY(0deg);
+    font-size: 3em;
+    padding-bottom: 2.5rem;
+    background: url('/assets/vertical-waves.png') #FFFFFF;
+
+    .value {
+      padding-top: 1rem;
+    }
+
+    .number-small {
+      font-size: 1rem;
+      text-align: left;
+      padding: 0.25rem;
+    }
+  }
+
+  .back {
+    padding-top: 3.75rem;
+    padding-bottom: 3.75rem;
+    transform: rotateY(180deg);
+    background: url('/assets/dark_embroidery.png') #000000;
+    border-color: transparent;
+    color: #CCCCCC;
+    font-variant: small-caps;
+    font-weight: bold;
+  }
+}
+
+.card-1 .front {
+  border-color: #E24A9C;
+}
+
+.card-2 .front {
+  border-color: #32A74C;
+}
+
+.card-3 .front {
+  border-color: #6D1661;
+}
+
+.card-5 .front {
+  border-color: #0177A6;
+}
+
+.card-8 .front {
+  border-color: #AEC43E;
+}
+
+.card-13 .front {
+  border-color: #EDCA44;
+}
+
+.card-20 .front {
+  border-color: #A02722;
+}
+
+.card-40 .front {
+  border-color: #8186AD;
+}
+
+.card-100 .front {
+  border-color: #00B6AF;
+}
+
+.card-flipped {
+  border-color: transparent;
+}

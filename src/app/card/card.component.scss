@@ -9,6 +9,10 @@
 
     &:hover {
       transform: translateY(-2rem) rotate(15deg);
+
+      .front {
+        box-shadow: 5px 5px 15px #000000;
+      }
     }
   }
 }
@@ -33,6 +37,7 @@
     border-radius: 5px;
     text-align: center;
     box-shadow: 1px 1px 1px #000000;
+    transition: box-shadow 0.2s;
   }
 
   .front {

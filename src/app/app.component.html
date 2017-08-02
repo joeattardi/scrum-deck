@@ -1,20 +1,24 @@
-<h1>Scrum Deck</h1>
+<header>
+  <h1>ScrumDeck</h1>
+</header>
 
-<div>
-  <button (click)="flipped = !flipped">Flip!</button>
-</div>
-
-<h2>Current Game</h2>
-<div id="game-area">
-  <div class="player">
-    <div class="player-name">Joe</div>
-    <app-card value="1" [flipped]="flipped"></app-card>
+<div id="main-content">
+  <div>
+    <button (click)="flipped = !flipped">Flip!</button>
   </div>
-  <div class="player">
-    <div class="player-name">Bob</div>
-    <app-card value="2" [flipped]="flipped"></app-card>
-  </div>
-</div>
 
-<h2>My Deck</h2>
-<app-deck></app-deck>
+  <h2>Current Game</h2>
+  <div id="game-area">
+    <div class="player">
+      <div class="player-name">Joe</div>
+      <app-card value="1" [flipped]="flipped"></app-card>
+    </div>
+    <div class="player">
+      <div class="player-name">Bob</div>
+      <app-card value="2" [flipped]="flipped"></app-card>
+    </div>
+  </div>
+
+  <h2>My Deck</h2>
+  <app-deck></app-deck>
+</div>

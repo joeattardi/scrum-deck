@@ -1,3 +1,18 @@
+header {
+  background-color: #3472D7;
+  padding: 0.5rem;
+  color: #FFFFFF;
+  box-shadow: 0px 1px 1px #000000;
+
+  h1 {
+    margin: 0;
+  }
+}
+
+#main-content {
+  padding: 1rem;
+}
+
 #game-area {
   height: 12em;
   display: flex;

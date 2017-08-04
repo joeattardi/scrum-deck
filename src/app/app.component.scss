@@ -1,8 +1,16 @@
+@import "../variables";
+
 header {
-  background-color: #3472D7;
-  padding: 0.5rem;
+  background-color: $brand-color;
+  padding: 1rem;
   color: #FFFFFF;
   box-shadow: 0px 1px 1px #000000;
+  display: flex;
+
+  .logo {
+    width: 4em;
+    height: 4em;
+  }
 
   h1 {
     margin: 0;
@@ -11,19 +19,4 @@ header {
 
 #main-content {
   padding: 1rem;
-}
-
-#game-area {
-  height: 12em;
-  display: flex;
-
-  .player {
-    display: flex;
-    flex-direction: column;
-
-    .player-name {
-      text-align: center;
-      font-weight: bold;
-    }
-  }
 }

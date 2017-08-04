@@ -1,7 +1,10 @@
+@import "../../variables";
+
 .flip-container {
   perspective: 1000px;
   width: 7rem;
   display: inline-block;
+  margin: 0.5rem;
 
   &.in-deck {
     cursor: pointer;
@@ -59,14 +62,14 @@
   }
 
   .back {
-    padding-top: 3.75rem;
-    padding-bottom: 3.75rem;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
     transform: rotateY(180deg);
-    background: url('/assets/dark_embroidery.png') #000000;
+    background: $brand-color;
     border-color: transparent;
-    color: #CCCCCC;
-    font-variant: small-caps;
+    color: #FFFFFF;
     font-weight: bold;
+    font-size: 4em;
   }
 }
 

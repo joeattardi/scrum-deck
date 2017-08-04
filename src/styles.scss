@@ -1,6 +1,37 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto');
+@import 'variables';
 
 body {
   font-family: Roboto;
   margin: 0;
+}
+
+input {
+  font-size: 1.5rem;
+  border-radius: 3px;
+  border: 1px solid #CCCCCC;
+  padding: 0.25rem;
+
+  &.error {
+    border-color: $error-color;
+  }
+}
+
+button {
+  background: $brand-color;
+  color: #FFFFFF;
+  font-size: 1.1rem;
+  border: 1px solid darken($brand-color, 10%);
+  border-radius: 3px;
+  padding: 0.5em 2em;
+  cursor: pointer;
+
+  &:hover {
+    background: lighten($brand-color, 5%);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
 }

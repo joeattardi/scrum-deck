@@ -1,29 +1,26 @@
 import { Injectable } from '@angular/core';
-
-import { AuthService } from './auth.service';
-
+import { Store } from '@ngrx/store';
 import * as io from 'socket.io-client';
+
+import { AppState } from './state';
+import { AuthService } from './auth.service';
+import { PlayerListAction } from './actions';
 
 @Injectable()
 export class SocketService {
   private socket: SocketIOClient.Socket;
 
-  playerList: string[];
-
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService, private store: Store<AppState>) { }
 
   init() {
     this.socket = io('/');
 
     this.socket.on('connect', () => {
-      console.log('Connected to server');
-
       this.socket.emit('join', this.authService.name);
     });
 
     this.socket.on('playerList', players => {
-      console.log('Player list:', players);
-      this.playerList = players;
+      this.store.dispatch(new PlayerListAction(players));
     });
   }
 }

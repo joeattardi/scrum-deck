@@ -30,7 +30,7 @@
   <section>
     <h2>Participants</h2>
     <ul>
-      <li *ngFor="let player of players">{{player}}</li>
+      <li *ngFor="let player of players$ | async">{{player}}</li>
     </ul>
   </section>
 </div>

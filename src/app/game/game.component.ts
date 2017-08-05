@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs/Observable';
 
+import { AppState } from '../state';
 import { SocketService } from '../socket.service';
 
 @Component({
@@ -10,13 +13,13 @@ import { SocketService } from '../socket.service';
 export class GameComponent implements OnInit {
   flipped = true;
 
-  constructor(private socketService: SocketService) { }
+  players$: Observable<string[]>;
+
+  constructor(private socketService: SocketService, private store: Store<AppState>) {
+    this.players$ = store.select((state: AppState) => state.players);
+  }
 
   ngOnInit() {
     this.socketService.init();
-  }
-
-  get players() {
-    return this.socketService.playerList;
   }
 }

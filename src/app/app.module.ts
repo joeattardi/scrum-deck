@@ -16,9 +16,12 @@ import { AuthGuard } from './auth-guard.service';
 import { AuthService } from './auth.service';
 import { SocketService } from './socket.service';
 
+import { phaseReducer } from './reducers/phase';
 import { playersReducer } from './reducers/players';
+import { voteReducer } from './reducers/vote';
 
 import { environment } from '../environments/environment';
+import { CardPlaceholderComponent } from './card-placeholder/card-placeholder.component';
 
 const appRoutes: Routes = [
   { path: '', component: LoginComponent },
@@ -35,14 +38,17 @@ const appRoutes: Routes = [
     CardComponent,
     DeckComponent,
     LoginComponent,
-    GameComponent
+    GameComponent,
+    CardPlaceholderComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
     RouterModule.forRoot(appRoutes),
     StoreModule.forRoot({
-      players: playersReducer
+      players: playersReducer,
+      phase: phaseReducer,
+      votes: voteReducer
     }),
     !environment.production ? StoreDevtoolsModule.instrument({ maxAge: 25 }) : []
   ],

@@ -4,7 +4,13 @@ const logger = require('./logger');
 
 let io;
 
-let players = [];
+let connectedPlayers = [];
+
+let gameState = {
+  players: [],
+  phase: 'VOTING',
+  votes: {}
+};
 
 exports.init = function init(expressServer) {
   io = new Server(expressServer);
@@ -14,17 +20,28 @@ exports.init = function init(expressServer) {
 
     socket.on('join', name => {
       logger.info(`${name} is joining the game`);
-      players.push({ name, socket });
+      connectedPlayers.push({ name, socket });
+      gameState.players.push(name);
 
-      io.emit('playerList', players.map(record => record.name));
+      socket.broadcast.emit('playerJoined', name);
+      socket.emit('gameState', gameState);
     });
 
     socket.on('disconnect', () => {
-      const player = players.find(record => record.socket === socket);
+      const player = connectedPlayers.find(record => record.socket === socket);
       logger.info(`${player.name} disconnected`);
 
-      players = players.filter(p => p !== player);
-      io.emit('playerList', players.map(record => record.name));
+      connectdPlayers = connectedPlayers.filter(p => p !== player);
+      gameState.players = gameState.players.filter(p => p !== player.name);
+      socket.broadcast.emit('playerLeft', player.name);
+    });
+
+    socket.on('vote', vote => {
+      const player = connectedPlayers.find(record => record.socket === socket);
+      logger.info(`${player.name} voted ${vote}`);
+
+      gameState.votes[player.name] = vote;
+      socket.broadcast.emit('vote', { player: player.name, vote });
     });
   });
 };

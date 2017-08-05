@@ -1,15 +1,18 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
+import debug from 'debug';
+
+const logger = debug('ScrumDeck:DeckComponent');
 
 @Component({
   selector: 'app-deck',
   templateUrl: './deck.component.html',
   styleUrls: ['./deck.component.scss']
 })
-export class DeckComponent implements OnInit {
+export class DeckComponent {
+  @Output() vote = new EventEmitter<string>();
 
-  constructor() { }
-
-  ngOnInit() {
+  onCardClicked(card) {
+    logger('Submitting vote:', card);
+    this.vote.emit(card);
   }
-
 }

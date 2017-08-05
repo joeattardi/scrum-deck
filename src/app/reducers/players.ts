@@ -10,6 +10,8 @@ export function playersReducer(state: string[] = [], action: Action) {
       return state.filter(player => player !== action.payload);
     case Actions.PLAYER_LIST:
       return action.payload;
+    case Actions.SET_GAME_STATE:
+      return action.payload.players;
     default:
       return state;
   }

@@ -1,13 +1,13 @@
 <div id="game-root">
   <section id="game-container">
     <div>
-      <button (click)="flipped = !flipped">Flip</button>
+      <button [disabled]="!allVoted" (click)="flipped = !flipped">Flip</button>
       <button>Play Again</button>
     </div>
 
     <h2>Current Game</h2>
     <div id="game-area">
-      <div *ngFor="let player of players$ | async" class="player">
+      <div *ngFor="let player of players" class="player">
         <div class="player-name">{{player.name}}</div>
         <app-card-placeholder *ngIf="!votes[player.id]"></app-card-placeholder>
         <app-card *ngIf="votes[player.id]" [value]="votes[player.id]" [flipped]="flipped"></app-card>
@@ -20,7 +20,7 @@
   <section>
     <h2>Participants</h2>
     <ul>
-      <li *ngFor="let player of players$ | async">{{player}}</li>
+      <li *ngFor="let player of players">{{player.name}}</li>
     </ul>
   </section>
 </div>

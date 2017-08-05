@@ -24,11 +24,6 @@ export class SocketService {
       this.socket.emit('join', this.authService.name);
     });
 
-    this.socket.on('playerList', players => {
-      logger('Received player list:', players);
-      this.store.dispatch(new Actions.PlayerListAction(players));
-    });
-
     this.socket.on('playerJoined', player => {
       logger(`Received: Player ${player} joined`);
       this.store.dispatch(new Actions.PlayerJoinedAction(player));

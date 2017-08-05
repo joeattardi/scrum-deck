@@ -36,7 +36,8 @@ exports.init = function init(expressServer) {
 
       connectdPlayers = connectedPlayers.filter(p => p !== player);
       gameState.players = gameState.players.filter(p => p.id !== player.id);
-      socket.broadcast.emit('playerLeft', player.name);
+      delete gameState.votes[player.id];
+      socket.broadcast.emit('playerLeft', { id: player.id, name: player.name });
     });
 
     socket.on('vote', vote => {

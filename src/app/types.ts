@@ -12,3 +12,8 @@ export interface Vote {
 export interface Votes {
   [player: string]: string;
 }
+
+export interface Player {
+  id: string;
+  name: string;
+}

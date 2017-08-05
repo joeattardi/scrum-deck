@@ -5,10 +5,15 @@
   .player {
     display: flex;
     flex-direction: column;
+    align-items: center;
 
     .player-name {
       text-align: center;
       font-weight: bold;
+    }
+
+    app-card {
+      margin: 0.25rem;
     }
   }
 }

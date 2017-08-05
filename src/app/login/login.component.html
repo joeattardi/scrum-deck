@@ -5,7 +5,7 @@
     <label for="name-field">What is your name?</label>
   </div>
   <div>
-    <input type="text" id="name-field" required
+    <input type="text" id="name-field" required autofocus
            [(ngModel)]="model.name" name="name" #name="ngModel"
            [class.error]="name.invalid && name.touched">
     <div class="error" [hidden]="name.valid || name.untouched">Please enter your name.</div>

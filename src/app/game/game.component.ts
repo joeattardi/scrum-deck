@@ -15,4 +15,8 @@ export class GameComponent implements OnInit {
   ngOnInit() {
     this.socketService.init();
   }
+
+  get players() {
+    return this.socketService.playerList;
+  }
 }

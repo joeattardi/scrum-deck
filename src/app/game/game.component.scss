@@ -1,3 +1,11 @@
+#game-root {
+  display: flex;
+}
+
+#game-container {
+  flex-grow: 1;
+}
+
 #game-area {
   display: flex;
 

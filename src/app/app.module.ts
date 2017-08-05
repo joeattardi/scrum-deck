@@ -11,6 +11,7 @@ import { GameComponent } from './game/game.component';
 
 import { AuthGuard } from './auth-guard.service';
 import { AuthService } from './auth.service';
+import { SocketService } from './socket.service';
 
 const appRoutes: Routes = [
   { path: '', component: LoginComponent },
@@ -34,7 +35,7 @@ const appRoutes: Routes = [
     FormsModule,
     RouterModule.forRoot(appRoutes)
   ],
-  providers: [AuthGuard, AuthService],
+  providers: [AuthGuard, AuthService, SocketService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

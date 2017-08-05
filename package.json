@@ -5,7 +5,8 @@
   "scripts": {
     "ng": "ng",
     "start:dev": "concurrently \"ng build --watch --progress=false\" \"nodemon server/index.js\"",
-    "start": "ng serve",
+    "start": "node server/index.js",
+    "heroku-postbuild": "ng build --prod --aot",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",

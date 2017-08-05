@@ -36,6 +36,6 @@ export class GameComponent implements OnInit {
 
   vote(value) {
     this.socketService.castVote(value);
-    this.store.dispatch(new VoteAction({ player: this.authService.name, vote: value }));
+    this.store.dispatch(new VoteAction({ player: this.authService.playerId, vote: value }));
   }
 }

@@ -44,6 +44,10 @@ export class SocketService {
       this.store.dispatch(new Actions.SetGameStateAction(state));
     });
 
+    this.socket.on('playerId', playerId => {
+      this.authService.playerId = playerId;
+    });
+
     this.socket.on('vote', (vote: Vote) => {
       logger(`Received: ${vote.player} voted ${vote.vote}`);
       this.store.dispatch(new Actions.VoteAction(vote));

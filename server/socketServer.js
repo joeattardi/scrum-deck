@@ -1,4 +1,5 @@
 const Server = require('socket.io');
+const shortid = require('shortid');
 
 const logger = require('./logger');
 
@@ -20,10 +21,12 @@ exports.init = function init(expressServer) {
 
     socket.on('join', name => {
       logger.info(`${name} is joining the game`);
-      connectedPlayers.push({ name, socket });
-      gameState.players.push(name);
+      const playerId = shortid.generate();
+      connectedPlayers.push({ id: playerId, name, socket });
+      gameState.players.push({ id: playerId, name });
 
-      socket.broadcast.emit('playerJoined', name);
+      socket.broadcast.emit('playerJoined', { id: playerId, name });
+      socket.emit('playerId', playerId);
       socket.emit('gameState', gameState);
     });
 
@@ -32,7 +35,7 @@ exports.init = function init(expressServer) {
       logger.info(`${player.name} disconnected`);
 
       connectdPlayers = connectedPlayers.filter(p => p !== player);
-      gameState.players = gameState.players.filter(p => p !== player.name);
+      gameState.players = gameState.players.filter(p => p.id !== player.id);
       socket.broadcast.emit('playerLeft', player.name);
     });
 
@@ -40,8 +43,8 @@ exports.init = function init(expressServer) {
       const player = connectedPlayers.find(record => record.socket === socket);
       logger.info(`${player.name} voted ${vote}`);
 
-      gameState.votes[player.name] = vote;
-      socket.broadcast.emit('vote', { player: player.name, vote });
+      gameState.votes[player.id] = vote;
+      socket.broadcast.emit('vote', { player: player.id, vote });
     });
   });
 };

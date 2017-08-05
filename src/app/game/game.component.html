@@ -8,9 +8,9 @@
     <h2>Current Game</h2>
     <div id="game-area">
       <div *ngFor="let player of players$ | async" class="player">
-        <div class="player-name">{{player}}</div>
-        <app-card-placeholder *ngIf="!votes[player]"></app-card-placeholder>
-        <app-card *ngIf="votes[player]" [value]="votes[player]" [flipped]="flipped"></app-card>
+        <div class="player-name">{{player.name}}</div>
+        <app-card-placeholder *ngIf="!votes[player.id]"></app-card-placeholder>
+        <app-card *ngIf="votes[player.id]" [value]="votes[player.id]" [flipped]="flipped"></app-card>
       </div>
     </div>
 

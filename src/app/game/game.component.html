@@ -1,26 +1,29 @@
 <div id="game-root">
   <section id="game-container">
     <div>
-      <button [disabled]="!allVoted" (click)="flipped = !flipped">Flip</button>
-      <button>Play Again</button>
+      <button [disabled]="!allVoted" (click)="flipCards()">Flip</button>
+      <button (click)="playAgain()">Play Again</button>
     </div>
 
-    <h2>Current Game</h2>
     <div id="game-area">
       <div *ngFor="let player of players" class="player">
         <div class="player-name">{{player.name}}</div>
         <app-card-placeholder *ngIf="!votes[player.id]"></app-card-placeholder>
-        <app-card *ngIf="votes[player.id]" [value]="votes[player.id]" [flipped]="flipped"></app-card>
+        <app-card *ngIf="votes[player.id]" [value]="votes[player.id]" [flipped]="!cardsVisible"></app-card>
       </div>
     </div>
 
-    <h2>My Deck</h2>
-    <app-deck (vote)="vote($event)"></app-deck>
+    <app-deck *ngIf="!voted" (vote)="vote($event)"></app-deck>
+    <div id="voted" *ngIf="voted">Your vote: <app-card [value]="myVote"></app-card></div>
   </section>
-  <section>
+  <section id="participants">
     <h2>Participants</h2>
     <ul>
-      <li *ngFor="let player of players">{{player.name}}</li>
+      <li *ngFor="let player of players">
+        <i class="fa fa-user"></i>
+        {{player.name}}
+        <i *ngIf="votes[player.id]" class="fa fa-check"></i>
+      </li>
     </ul>
   </section>
 </div>

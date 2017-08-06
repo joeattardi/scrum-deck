@@ -12,8 +12,16 @@ header {
     height: 4em;
   }
 
-  h1 {
-    margin: 0;
+  #header-content {
+    flex-grow: 1;
+
+    h1 {
+      margin: 0;
+    }
+  }
+
+  #player {
+    align-self: center;
   }
 }
 

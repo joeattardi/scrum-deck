@@ -16,7 +16,10 @@ import { AuthGuard } from './auth-guard.service';
 import { AuthService } from './auth.service';
 import { SocketService } from './socket.service';
 
+import { cardsVisibleReducer } from './reducers/cards-visible';
 import { phaseReducer } from './reducers/phase';
+import { playerIdReducer } from './reducers/player-id';
+import { playerNameReducer } from './reducers/player-name';
 import { playersReducer } from './reducers/players';
 import { voteReducer } from './reducers/vote';
 
@@ -46,6 +49,9 @@ const appRoutes: Routes = [
     FormsModule,
     RouterModule.forRoot(appRoutes),
     StoreModule.forRoot({
+      cardsVisible: cardsVisibleReducer,
+      playerId: playerIdReducer,
+      playerName: playerNameReducer,
       players: playersReducer,
       phase: phaseReducer,
       votes: voteReducer

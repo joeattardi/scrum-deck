@@ -13,6 +13,10 @@ let gameState = {
   votes: {}
 };
 
+function getPlayer(socket) {
+  return connectedPlayers.find(record => record.socket === socket);
+}
+
 exports.init = function init(expressServer) {
   io = new Server(expressServer);
 
@@ -31,21 +35,43 @@ exports.init = function init(expressServer) {
     });
 
     socket.on('disconnect', () => {
-      const player = connectedPlayers.find(record => record.socket === socket);
+      const player = getPlayer(socket);
       logger.info(`${player.name} disconnected`);
 
-      connectdPlayers = connectedPlayers.filter(p => p !== player);
+      connectedPlayers = connectedPlayers.filter(p => p !== player);
       gameState.players = gameState.players.filter(p => p.id !== player.id);
       delete gameState.votes[player.id];
       socket.broadcast.emit('playerLeft', { id: player.id, name: player.name });
     });
 
     socket.on('vote', vote => {
-      const player = connectedPlayers.find(record => record.socket === socket);
+      const player = getPlayer(socket);
       logger.info(`${player.name} voted ${vote}`);
 
       gameState.votes[player.id] = vote;
       socket.broadcast.emit('vote', { player: player.id, vote });
+    });
+
+    socket.on('newGame', () => {
+      const player = getPlayer(socket);
+      logger.info(`${player.name} started a new game`);
+
+      gameState.votes = {};
+      socket.broadcast.emit('newGame');
+    });
+
+    socket.on('showCards', () => {
+      const player = getPlayer(socket);
+      logger.info(`${player.name} showed the cards`);
+
+      socket.broadcast.emit('showCards');
+    });
+
+    socket.on('hideCards', () => {
+      const player = getPlayer(socket);
+      logger.info(`${player.name} hid the cards`);
+
+      socket.broadcast.emit('hideCards');
     });
   });
 };

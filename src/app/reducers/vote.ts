@@ -12,6 +12,8 @@ export function voteReducer(state = {}, action) {
       const newState = Object.assign({}, state);
       delete newState[action.payload.id];
       return newState;
+    case Actions.NEW_GAME:
+      return {};
     default:
       return state;
   }

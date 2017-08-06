@@ -1,4 +1,7 @@
 export interface AppState {
+  cardsVisible: boolean;
+  playerId: string;
+  playerName: string;
   players: string[];
   phase: string;
   votes: Votes;

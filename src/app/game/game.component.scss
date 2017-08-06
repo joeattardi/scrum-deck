@@ -8,6 +8,7 @@
 
 #game-area {
   display: flex;
+  margin: 1rem;
 
   .player {
     display: flex;
@@ -22,5 +23,20 @@
     app-card {
       margin: 0.25rem;
     }
+  }
+}
+
+#voted {
+  display: flex;
+  align-items: center;
+  font-size: 1.5rem;
+  app-card {
+    margin-left: 1rem;
+  }
+}
+
+#participants {
+  li {
+    list-style-type: none;
   }
 }

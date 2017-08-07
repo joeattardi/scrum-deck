@@ -8,6 +8,8 @@ export function cardsVisibleReducer(state = false, action: Action) {
       return true;
     case Actions.HIDE_CARDS:
       return false;
+    case Actions.SET_GAME_STATE:
+      return action.payload.cardsVisible;
     default:
       return state;
   }

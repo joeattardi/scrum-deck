@@ -60,24 +60,14 @@ export class GameComponent implements OnDestroy, OnInit {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-  flipCards() {
-    if (this.cardsVisible) {
-      this.store.dispatch(new HideCardsAction());
-      this.socketService.hideCards();
-    } else {
-      this.store.dispatch(new ShowCardsAction());
-      this.socketService.showCards();
-    }
-  }
-
   vote(value) {
     this.socketService.castVote(value);
-    this.store.dispatch(new VoteAction({ player: this.authService.playerId, vote: value }));
+    this.store.dispatch(new VoteAction({ player: this.playerId, vote: value }));
     this.myVote = value;
     this.voted = true;
   }
 
-  playAgain() {
+  newGame() {
     this.store.dispatch(new NewGameAction());
     this.socketService.playAgain();
     this.voted = false;

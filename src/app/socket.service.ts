@@ -3,9 +3,10 @@ import { Store } from '@ngrx/store';
 import debug from 'debug';
 import * as io from 'socket.io-client';
 
+import * as Actions from './actions';
+import * as socketConstants from '../../shared/socketConstants';
 import { AppState } from './types';
 import { AuthService } from './auth.service';
-import * as Actions from './actions';
 import { Vote } from './types';
 
 const logger = debug('ScrumDeck:SocketService');
@@ -19,51 +20,47 @@ export class SocketService {
   init() {
     this.socket = io('/');
 
-    this.socket.on('connect', () => {
+    this.socket.on(socketConstants.CONNECT, () => {
       logger('Connected to socket server');
-      this.socket.emit('join', this.authService.name);
+      this.socket.emit(socketConstants.JOIN, this.authService.name);
     });
 
-    this.socket.on('playerId', playerId => {
+    this.socket.on(socketConstants.PLAYER_ID, playerId => {
       logger(`Got my player id: ${playerId}`)
       this.store.dispatch(new Actions.SetPlayerIdAction(playerId));
     });
 
-    this.socket.on('playerJoined', player => {
+    this.socket.on(socketConstants.PLAYER_JOINED, player => {
       logger(`Received: Player ${player} joined`);
       this.store.dispatch(new Actions.PlayerJoinedAction(player));
     });
 
-    this.socket.on('playerLeft', player => {
+    this.socket.on(socketConstants.PLAYER_LEFT, player => {
       logger(`Received: Player ${player} left`);
       this.store.dispatch(new Actions.PlayerLeftAction(player));
     });
 
-    this.socket.on('gameState', state => {
+    this.socket.on(socketConstants.GAME_STATE, state => {
       logger('Got game state:', state);
       this.store.dispatch(new Actions.SetGameStateAction(state));
     });
 
-    this.socket.on('playerId', playerId => {
-      this.authService.playerId = playerId;
-    });
-
-    this.socket.on('vote', (vote: Vote) => {
+    this.socket.on(socketConstants.VOTE, (vote: Vote) => {
       logger(`Received: ${vote.player} voted ${vote.vote}`);
       this.store.dispatch(new Actions.VoteAction(vote));
     });
 
-    this.socket.on('newGame', () => {
+    this.socket.on(socketConstants.NEW_GAME, () => {
       logger(`Received signal for new game`);
       this.store.dispatch(new Actions.NewGameAction());
     });
 
-    this.socket.on('showCards', () => {
+    this.socket.on(socketConstants.SHOW_CARDS, () => {
       logger('Received signal to show cards');
       this.store.dispatch(new Actions.ShowCardsAction());
     });
 
-    this.socket.on('hideCards', () => {
+    this.socket.on(socketConstants.HIDE_CARDS, () => {
       logger('Received signal to hide cards');
       this.store.dispatch(new Actions.HideCardsAction());
     });
@@ -71,12 +68,12 @@ export class SocketService {
 
   castVote(vote) {
     logger(`Sending vote for ${this.authService.name}: ${vote}`);
-    this.socket.emit('vote', vote);
+    this.socket.emit(socketConstants.VOTE, vote);
   }
 
   playAgain() {
     logger('Sending request for new game');
-    this.socket.emit('newGame');
+    this.socket.emit(socketConstants.NEW_GAME);
   }
 
   showCards() {

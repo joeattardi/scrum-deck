@@ -3,7 +3,9 @@ const path = require('path');
 
 const express = require('express');
 
+const pkg = require('../package.json');
 const socketServer = require('./socketServer');
+const logger = require('./logger');
 
 const app = express();
 
@@ -15,7 +17,13 @@ app.get('*', (req, res) => {
 
 const port = process.env.PORT || 9000;
 
+console.log('##############################################################');
+console.log(`ScrumDeck ${pkg.version}`)
+console.log('Copyright (c) 2017 Joe Attardi');
+console.log('Licensed under the terms of the MIT License');
+console.log('##############################################################');
+
 const server = http.createServer(app);
-server.listen(port, () => console.log(`ScrumDeck listening on port ${port}`));
+server.listen(port, () => logger.info(`Server listening on port ${port}`));
 
 socketServer.init(server);

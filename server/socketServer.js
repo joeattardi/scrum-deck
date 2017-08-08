@@ -54,7 +54,11 @@ exports.init = function init(expressServer) {
       logger.info(`${player.name} voted ${vote}`);
 
       gameState.votes[player.id] = vote;
-      socket.broadcast.emit(socketConstants.VOTE, { player: player.id, vote });
+      socket.broadcast.emit(socketConstants.VOTE, {
+        player: {
+          id: player.id,
+          name: player.name
+        }, vote });
 
       if (Object.keys(gameState.votes).length === gameState.players.length) {
         logger.info('All players have voted');

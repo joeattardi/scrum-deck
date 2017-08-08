@@ -69,7 +69,7 @@ export class GameComponent implements OnDestroy, OnInit {
 
   newGame() {
     this.store.dispatch(new NewGameAction());
-    this.socketService.playAgain();
+    this.socketService.newGame();
     this.voted = false;
     this.myVote = null;
   }

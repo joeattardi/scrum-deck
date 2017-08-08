@@ -15,6 +15,11 @@ export class AppComponent {
 
   playerName$: Observable<string>;
 
+  notificationOptions = {
+    timeOut: 3000,
+    showProgressBar: false
+  };
+
   constructor(private store: Store<AppState>) {
     this.playerName$ = store.select((state: AppState) => state.playerName);
   }

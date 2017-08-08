@@ -2,7 +2,7 @@ export interface AppState {
   cardsVisible: boolean;
   playerId: string;
   playerName: string;
-  players: string[];
+  players: Player[];
   phase: string;
   votes: Votes;
 }

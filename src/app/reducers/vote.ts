@@ -1,3 +1,5 @@
+import { omit } from 'lodash';
+
 import * as Actions from '../actions';
 
 type Action = Actions.All;
@@ -9,9 +11,7 @@ export function voteReducer(state = {}, action) {
     case Actions.SET_GAME_STATE:
       return action.payload.votes;
     case Actions.PLAYER_LEFT:
-      const newState = Object.assign({}, state);
-      delete newState[action.payload.id];
-      return newState;
+      return omit(state, action.payload.id);
     case Actions.NEW_GAME:
       return {};
     default:

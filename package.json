@@ -8,7 +8,8 @@
     "start": "node server/index.js",
     "heroku-postbuild": "ng build --prod --aot",
     "build": "ng build",
-    "test": "ng test",
+    "test": "ng test --single-run",
+    "test:start": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
   },

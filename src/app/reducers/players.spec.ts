@@ -1,7 +1,11 @@
-import { PlayerJoinedAction, PlayerLeftAction, SetGameStateAction } from '../actions';
+import { DummyAction, PlayerJoinedAction, PlayerLeftAction, SetGameStateAction } from '../actions';
 import { playersReducer } from './players';
 
 describe('Players reducer', () => {
+  it('should default to an empty array', () => {
+    expect(playersReducer(undefined, new DummyAction())).toEqual([]);
+  });
+
   it('should add a player when they join', () => {
     const newState = playersReducer([], new PlayerJoinedAction({ id: 'abc123', name: 'Joe' }));
     expect(newState).toEqual([
@@ -53,5 +57,10 @@ describe('Players reducer', () => {
       { id: 'adsf', name: 'Bill' },
       { id: 'zkfj', name: 'Sam' }
     ]);
+  });
+
+  it('should leave the players unchanged on an unknown action', () => {
+    const initialState = [{ id: 'abc123', name: 'Joe' }];
+    expect(playersReducer(initialState, new DummyAction)).toEqual(initialState);
   });
 });

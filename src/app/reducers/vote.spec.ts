@@ -1,7 +1,11 @@
-import { NewGameAction, PlayerLeftAction, SetGameStateAction, VoteAction } from '../actions';
+import { DummyAction, NewGameAction, PlayerLeftAction, SetGameStateAction, VoteAction } from '../actions';
 import { voteReducer } from './vote';
 
 describe('Vote reducer', () => {
+  it('should default to an empty object', () => {
+    expect(voteReducer(undefined, new DummyAction())).toEqual({});
+  });
+
   it('should record a new vote', () => {
     const startVotes = {
       abc123: '5'
@@ -55,5 +59,13 @@ describe('Vote reducer', () => {
     };
     const newVotes = voteReducer(startVotes, new NewGameAction());
     expect(newVotes).toEqual({});
+  });
+
+  it('should leave the votes unchanged on an unknown action', () => {
+    const startVotes = {
+      abc123: '5',
+      def456: '8'
+    };
+    expect(voteReducer(startVotes, new DummyAction())).toEqual(startVotes);
   });
 });

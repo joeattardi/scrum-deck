@@ -53,6 +53,10 @@ export class VoteAction implements Action {
   constructor(public payload: Vote) { }
 }
 
+export class DummyAction implements Action {
+  readonly type = 'DUMMY';
+}
+
 export type All = PlayerJoinedAction
   | HideCardsAction
   | NewGameAction
@@ -61,4 +65,5 @@ export type All = PlayerJoinedAction
   | PlayerLeftAction
   | SetGameStateAction
   | ShowCardsAction
-  | VoteAction;
+  | VoteAction
+  | DummyAction;

@@ -1,7 +1,11 @@
-import { HideCardsAction, SetGameStateAction, ShowCardsAction } from '../actions';
+import { DummyAction, HideCardsAction, SetGameStateAction, ShowCardsAction } from '../actions';
 import { cardsVisibleReducer } from './cards-visible';
 
 describe('Cards Visible reducer', () => {
+  it('should default to false', () => {
+    expect(cardsVisibleReducer(undefined, new DummyAction())).toBe(false);
+  });
+
   it('should show the cards regardless of current card visibility', () => {
     expect(cardsVisibleReducer(false, new ShowCardsAction())).toBe(true);
     expect(cardsVisibleReducer(true, new ShowCardsAction())).toBe(true);
@@ -27,5 +31,10 @@ describe('Cards Visible reducer', () => {
     state.cardsVisible = false;
     expect(cardsVisibleReducer(false, new SetGameStateAction(state))).toBe(false);
     expect(cardsVisibleReducer(true, new SetGameStateAction(state))).toBe(false);
+  });
+
+  it('should leave the state unchanged on an unknown action', () => {
+    expect(cardsVisibleReducer(false, new DummyAction())).toBe(false);
+    expect(cardsVisibleReducer(true, new DummyAction())).toBe(true);
   });
 });

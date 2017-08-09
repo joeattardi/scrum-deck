@@ -28,7 +28,7 @@ export class SocketService {
     });
 
     this.socket.on(socketConstants.PLAYER_ID, playerId => {
-      logger(`Got my player id: ${playerId}`)
+      logger(`Got my player id: ${playerId}`);
       this.store.dispatch(new Actions.SetPlayerIdAction(playerId));
     });
 

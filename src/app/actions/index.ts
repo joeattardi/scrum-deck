@@ -2,7 +2,7 @@ import { Action } from '@ngrx/store';
 import { AppState, Player, Vote } from '../types';
 
 export const HIDE_CARDS = 'HIDE_CARDS';
-export const NEW_GAME = 'NEW_GAME'
+export const NEW_GAME = 'NEW_GAME';
 export const PLAYER_JOINED = 'PLAYER_JOINED';
 export const PLAYER_LEFT = 'PLAYER_LEFT';
 export const SET_GAME_STATE = 'SET_GAME_STATE';

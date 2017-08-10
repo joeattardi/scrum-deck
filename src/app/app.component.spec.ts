@@ -14,7 +14,7 @@ const mockStore = <any> {
   }
 };
 
-fdescribe('App Component', () => {
+describe('App Component', () => {
   let component: AppComponent;
   let fixture: ComponentFixture<AppComponent>;
   let debugElement: DebugElement;

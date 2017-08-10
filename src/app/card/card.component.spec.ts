@@ -45,13 +45,11 @@ describe('Card Component', () => {
     component.value = '5';
     fixture.detectChanges();
 
-    const clickHandler = jasmine.createSpy('clickHandler');
-    const subscription = component.cardClick.subscribe(clickHandler);
+    spyOn(component.cardClick, 'emit');
 
     const frontEl = debugElement.query(By.css('.front'));
     frontEl.nativeElement.click();
 
-    expect(clickHandler).toHaveBeenCalledWith('5');
-    subscription.unsubscribe();
+    expect(component.cardClick.emit).toHaveBeenCalledWith('5');
   });
 });

@@ -15,6 +15,7 @@ import { DeckComponent } from './deck/deck.component';
 import { LoginComponent } from './login/login.component';
 import { GameComponent } from './game/game.component';
 
+import { appRoutes } from './app.routes';
 import { AuthGuard } from './auth-guard.service';
 import { SocketService } from './socket.service';
 
@@ -27,15 +28,6 @@ import { voteReducer } from './reducers/vote';
 
 import { environment } from '../environments/environment';
 import { CardPlaceholderComponent } from './card-placeholder/card-placeholder.component';
-
-const appRoutes: Routes = [
-  { path: '', component: LoginComponent },
-  {
-    path: 'game',
-    component: GameComponent,
-    canActivate: [AuthGuard]
-  }
-];
 
 @NgModule({
   declarations: [

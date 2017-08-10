@@ -4,7 +4,6 @@ import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 
 import { AppState } from '../types';
-import { AuthService } from '../auth.service';
 import { SocketService } from '../socket.service';
 import { HideCardsAction, NewGameAction, ShowCardsAction, VoteAction } from '../actions';
 import { Votes } from '../types';
@@ -26,9 +25,7 @@ export class GameComponent implements OnDestroy, OnInit {
 
   private subscriptions: Subscription[] = [];
 
-  constructor(private socketService: SocketService,
-      private store: Store<AppState>,
-      private authService: AuthService) {
+  constructor(private socketService: SocketService, private store: Store<AppState>) {
     this.subscriptions.push(store.select((state: AppState) => state.players)
       .subscribe((players: any[]) => {
         this.players = players;

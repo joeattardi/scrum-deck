@@ -4,7 +4,7 @@ import * as socketConstants from '../../shared/socketConstants';
 
 const mockAuthService = <any>{
   name: 'Joe'
-}
+};
 
 const mockStore = <any>{
   dispatch: action => {}
@@ -27,7 +27,7 @@ describe('Socket Service', () => {
   });
 
   it('should join the game after connecting', () => {
-    const mockSocket = { emit: jasmine.createSpy('emit') };
+    spyOn(mockSocket, 'emit');
     socketService.handleConnection(mockSocket);
     expect(mockSocket.emit).toHaveBeenCalledWith('join', 'Joe');
   });

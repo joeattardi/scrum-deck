@@ -5,7 +5,7 @@
     Estimation for remote teams
   </div>
   <div id="player" *ngIf="playerName$ | async">
-    <i class="fa fa-user-circle"></i> {{playerName$ | async}}
+    <i class="fa fa-user-circle"></i> <span id="player-name">{{playerName$ | async}}</span>
   </div>
 </header>
 

@@ -16,7 +16,6 @@ import { LoginComponent } from './login/login.component';
 import { GameComponent } from './game/game.component';
 
 import { AuthGuard } from './auth-guard.service';
-import { AuthService } from './auth.service';
 import { SocketService } from './socket.service';
 
 import { cardsVisibleReducer } from './reducers/cards-visible';
@@ -63,7 +62,7 @@ const appRoutes: Routes = [
     }),
     !environment.production ? StoreDevtoolsModule.instrument({ maxAge: 25 }) : []
   ],
-  providers: [AuthGuard, AuthService, SocketService],
+  providers: [AuthGuard, SocketService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

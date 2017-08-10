@@ -7,7 +7,6 @@ import { NotificationsService } from 'angular2-notifications';
 import * as Actions from './actions';
 import * as socketConstants from '../../shared/socketConstants';
 import { AppState } from './types';
-import { AuthService } from './auth.service';
 import { Vote } from './types';
 
 const logger = debug('ScrumDeck:SocketService');
@@ -15,9 +14,14 @@ const logger = debug('ScrumDeck:SocketService');
 @Injectable()
 export class SocketService {
   private socket: SocketIOClient.Socket;
+  private playerName: string;
 
-  constructor(private authService: AuthService, private store: Store<AppState>,
-    private notificationsService: NotificationsService) { }
+  constructor(private store: Store<AppState>, private notificationsService: NotificationsService) {
+    store.select((state: AppState) => state.playerName)
+      .subscribe((playerName: string) => {
+        this.playerName = playerName;
+      });
+   }
 
   init() {
     this.setSocket(io('/'));
@@ -39,7 +43,7 @@ export class SocketService {
 
   handleConnection(socket) {
     logger('Connected to socket server');
-    socket.emit(socketConstants.JOIN, this.authService.name);
+    socket.emit(socketConstants.JOIN, this.playerName);
   }
 
   handlePlayerId(playerId) {
@@ -91,7 +95,7 @@ export class SocketService {
   }
 
   castVote(vote) {
-    logger(`Sending vote for ${this.authService.name}: ${vote}`);
+    logger(`Sending vote for ${this.playerName}: ${vote}`);
     this.notificationsService.success('Vote Cast', `You voted ${vote}`);
     this.socket.emit(socketConstants.VOTE, vote);
   }

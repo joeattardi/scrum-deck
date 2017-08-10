@@ -1,15 +1,22 @@
-import { Injectable } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
+import { Injectable } from '@angular/core';
+import { Store } from '@ngrx/store';
 
-import { AuthService } from './auth.service';
+import { AppState } from './types';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
+  private playerName: string;
 
-  constructor(private authService: AuthService, private router: Router) { }
+  constructor(private router: Router, private store: Store<AppState>) {
+    this.store.select((state: AppState) => state.playerName)
+      .subscribe((playerName: string) => {
+        this.playerName = playerName;
+      });
+  }
 
   canActivate() {
-    if (!this.authService.name) {
+    if (!this.playerName) {
       this.router.navigate(['/']);
       return false;
     }

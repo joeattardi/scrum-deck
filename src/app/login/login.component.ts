@@ -3,7 +3,6 @@ import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 
 import { AppState } from '../types';
-import { AuthService } from '../auth.service';
 import { SetPlayerNameAction } from '../actions';
 
 @Component({
@@ -14,10 +13,9 @@ import { SetPlayerNameAction } from '../actions';
 export class LoginComponent {
   model = { name: '' };
 
-  constructor(private router: Router, private authService: AuthService, private store: Store<AppState>) { }
+  constructor(private router: Router, private store: Store<AppState>) { }
 
   submitForm(value) {
-    this.authService.name = this.model.name;
     this.store.dispatch(new SetPlayerNameAction(this.model.name));
     this.router.navigate(['/game']);
   }

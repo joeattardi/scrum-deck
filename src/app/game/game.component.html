@@ -15,7 +15,7 @@
     </div>
 
     <div id="game-area">
-      <div *ngFor="let player of players" class="player">
+      <div *ngFor="let player of players" class="player" [title]="player.name">
         <div class="player-name">{{player.name}}</div>
         <app-card-placeholder *ngIf="!votes[player.id]"></app-card-placeholder>
         <app-card *ngIf="votes[player.id]" [value]="votes[player.id]" [flipped]="!cardsVisible" [back]="player.name[0].toUpperCase()"></app-card>
@@ -25,16 +25,19 @@
     <app-deck *ngIf="!voted" (vote)="vote($event)"></app-deck>
     <div id="voted" *ngIf="voted">Your vote: <app-card [value]="myVote"></app-card></div>
   </section>
-  <section id="participants">
-    <h1>Participants</h1>
-    <ul>
-      <li *ngFor="let player of players">
-        <i class="fa fa-user"></i>
-        {{player.name}}
-        <i *ngIf="votes[player.id]" class="fa fa-check"></i>
-      </li>
-    </ul>
-  </section>
+
+  <div id="participants-container">
+    <h1>Players</h1>
+    <section id="participants">
+      <ul>
+        <li *ngFor="let player of players" [title]="player.name">
+          <i *ngIf="!votes[player.id]" class="fa fa-user"></i>
+          <i *ngIf="votes[player.id]" class="fa fa-check"></i>
+          {{player.name}}
+        </li>
+      </ul>
+    </section>
+  </div>
 </div>
 <div *ngIf="loading">
   <app-loader color="rgba(52, 114, 215, 0.2)" activeColor="#3472D7"></app-loader>

@@ -1,3 +1,5 @@
+@import "../../variables";
+
 #game-root {
   display: flex;
 }
@@ -8,16 +10,27 @@
 
 #game-area {
   display: flex;
-  margin: 1rem;
+  margin: 1rem 0;
+  padding: 1rem;
+  background: $panel-color;
+  border: 1px solid $panel-border-color;
+  border-radius: 5px;
 
   .player {
     display: flex;
     flex-direction: column;
     align-items: center;
+    width: 4rem;
+    margin: 0.25rem;
 
     .player-name {
       text-align: center;
       font-weight: bold;
+      font-size: 0.75rem;
+      width: 4rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     app-card {
@@ -35,14 +48,43 @@
   }
 }
 
-#participants {
-  li {
-    list-style-type: none;
+#participants-container {
+  margin-left: 1rem;
+  display: flex;
+  flex-direction: column;
+
+  #participants {
+    background: $panel-color;
+    border: 1px solid $panel-border-color;
+    border-radius: 5px;
+    flex-grow: 1;
+    padding: 0 1rem;
+    width: 8rem;
+
+    ul {
+      padding: 0;
+      
+      li {
+        list-style-type: none;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+
+        .fa-user {
+          color: #AAAAAA;
+        }
+
+        .fa-check {
+          color: #4A7F4A;
+        }
+      }
+    }
   }
 }
 
 h1 {
   margin: 0;
+  font-size: 1.5em;
 }
 
 #game-header {

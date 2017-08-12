@@ -1,4 +1,5 @@
 import { ActivatedRoute, Router } from '@angular/router';
+import Clipboard from 'clipboard';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
@@ -26,6 +27,7 @@ export class GameComponent implements OnDestroy, OnInit {
   playerId: string;
 
   gameName$: Observable<string>;
+  gameId$: Observable<string>;
 
   private subscriptions: Subscription[] = [];
 
@@ -53,9 +55,11 @@ export class GameComponent implements OnDestroy, OnInit {
       }));
 
     this.gameName$ = store.select((state: AppState) => state.gameName);
+    this.gameId$ = store.select((state: AppState) => state.gameId);
   }
 
   ngOnInit() {
+    const clipboard = new Clipboard('#clipboard-copy');
     this.socketService.joinGame(this.route.snapshot.paramMap.get('id'))
       .then(() => {
         this.loading = false;

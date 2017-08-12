@@ -1,8 +1,17 @@
 <div *ngIf="!loading" id="game-root">
   <section id="game-container">
-    <h1>{{gameName$ | async}}</h1>
-    <div>
-      <button (click)="newGame()">New Game</button>
+    <div id="game-header">
+      <h1><i class="fa fa-users"></i> {{gameName$ | async}}</h1>
+      <div>
+        <strong>Game ID:</strong> {{gameId$ | async}} 
+        <button id="clipboard-copy" title="Copy to clipboard" [attr.data-clipboard-text]="gameId$ | async">
+          <i class="fa fa-clipboard"></i>
+        </button>
+      </div>
+    </div>
+
+    <div id="game-buttons">
+      <button (click)="newGame()">New Round</button>
     </div>
 
     <div id="game-area">
@@ -17,7 +26,7 @@
     <div id="voted" *ngIf="voted">Your vote: <app-card [value]="myVote"></app-card></div>
   </section>
   <section id="participants">
-    <h2>Participants</h2>
+    <h1>Participants</h1>
     <ul>
       <li *ngFor="let player of players">
         <i class="fa fa-user"></i>

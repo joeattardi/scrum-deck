@@ -25,6 +25,7 @@ describe('Socket Handlers', () => {
   });
 
   it('should handle a player joining a game', () => {
+    process.env.BASE_URL = 'http://localhost:9000';
     const game = gameRegistry.createGame('My Game');
     const gameId = game.gameId;
 
@@ -53,7 +54,7 @@ describe('Socket Handlers', () => {
     expect(gameEmit).toHaveBeenCalledWith(socketConstants.PLAYER_JOINED, { id: 'abc123', name: 'Joe' });
     expect(socket.emit).toHaveBeenCalledWith(socketConstants.PLAYER_ID, 'abc123');
     expect(socket.emit).toHaveBeenCalledWith(socketConstants.GAME_STATE, game);
-    expect(callback).toHaveBeenCalledWith(socketConstants.OK);
+    expect(callback).toHaveBeenCalledWith({ baseUrl: 'http://localhost:9000' });
   });
 
   it('should send an error when joining a game id that does not exist', () => {

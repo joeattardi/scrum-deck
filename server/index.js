@@ -23,6 +23,8 @@ console.log('Copyright (c) 2017 Joe Attardi');
 console.log('Licensed under the terms of the MIT License');
 console.log('##############################################################');
 
+logger.debug(`Base URL: ${process.env.BASE_URL}`);
+
 const server = http.createServer(app);
 server.listen(port, () => logger.info(`Server listening on port ${port}`));
 

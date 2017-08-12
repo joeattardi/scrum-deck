@@ -128,7 +128,9 @@ export class SocketService {
         if (result === socketConstants.GAME_NOT_FOUND) {
           reject('Game not found');
         } else {
-          resolve();
+          resolve({
+            baseUrl: result.baseUrl
+          });
         }
       });
     });

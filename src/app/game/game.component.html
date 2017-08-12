@@ -3,10 +3,10 @@
     <div id="game-header">
       <h1><i class="fa fa-users"></i> {{gameName$ | async}}</h1>
       <div>
-        <strong>Game ID:</strong> {{gameId$ | async}} 
-        <button id="clipboard-copy" title="Copy to clipboard" [attr.data-clipboard-text]="gameId$ | async">
-          <i class="fa fa-clipboard"></i>
-        </button>
+        <strong>Join link:</strong> <a id="join-link" [href]="joinUrl">{{joinUrl}}</a>
+        <button id="clipboard-copy" title="Copy to clipboard" [attr.data-clipboard-text]="joinUrl">
+            <i class="fa fa-clipboard"></i>
+          </button>
       </div>
     </div>
 

@@ -1,6 +1,7 @@
 import { ActivatedRoute, Router } from '@angular/router';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { DebugElement } from '@angular/core';
+import { NotificationsService } from 'angular2-notifications';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
 import { Store } from '@ngrx/store';
@@ -17,6 +18,7 @@ import { SocketService } from '../socket.service';
 
 const state = {
   cardsVisible: new Subject(),
+  gameId: Observable.of('abc123'),
   gameName: Observable.of('My Game'),
   playerId: new Subject(),
   playerName: new Subject(),
@@ -27,9 +29,13 @@ const state = {
 
 const mockRouter = jasmine.createSpyObj('router', ['navigate']);
 
+const mockNotificationsService = {
+  success() {}
+};
+
 const mockSocketService = {
   init() { },
-  joinGame: jasmine.createSpy('joinGame').and.returnValue(Promise.resolve())
+  joinGame: jasmine.createSpy('joinGame').and.returnValue(Promise.resolve({ baseUrl: 'http://localhost:9000' }))
 };
 
 const mockStore = {
@@ -61,7 +67,8 @@ describe('Game Component', () => {
         { provide: SocketService, useValue: mockSocketService },
         { provide: Store, useValue: mockStore },
         { provide: ActivatedRoute, useValue: mockActivatedRoute },
-        { provide: Router, useValue: mockRouter }
+        { provide: Router, useValue: mockRouter },
+        { provide: NotificationsService, useValue: mockNotificationsService }
       ]
     }).compileComponents();
   }));
@@ -105,8 +112,17 @@ describe('Game Component', () => {
   });
 
   it('should show the game name', () => {
-    const gameTitleEl = el.querySelector('#game-container h1');
-    expect(gameTitleEl.innerHTML).toBe('My Game');
+    const gameTitleEl = <HTMLElement> el.querySelector('#game-container h1');
+    expect(gameTitleEl.innerText.trim()).toBe('My Game');
+  });
+
+  it('should show the game join link', () => {
+    component.baseUrl = 'http://localhost:9000';
+    fixture.detectChanges();
+
+    const joinLink = <HTMLLinkElement> el.querySelector('#join-link');
+    expect(joinLink.href).toBe('http://localhost:9000/join/abc123');
+    expect(joinLink.innerText.trim()).toBe('http://localhost:9000/join/abc123');
   });
 
   it('should render a player div for each player', () => {

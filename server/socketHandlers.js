@@ -37,7 +37,9 @@ exports.handleJoin = function handleJoin(socket, data, callback) {
     socket.to(data.gameId).emit(socketConstants.PLAYER_JOINED, { id: playerId, name: data.name });
     socket.emit(socketConstants.PLAYER_ID, playerId);
     socket.emit(socketConstants.GAME_STATE, gameState);
-    callback(socketConstants.OK);
+    callback({
+      baseUrl: process.env.BASE_URL
+    });
   } else {
     logger.debug(`Game ${data.gameId} not found`);
     callback(socketConstants.GAME_NOT_FOUND);

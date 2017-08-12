@@ -9,6 +9,10 @@ The server supports multiple concurrent games.
 
 ![Screenshot](https://raw.githubusercontent.com/joeattardi/scrum-deck/master/screenshot.png)
 
+## Demo
+
+A demo can be found running at [https://scrumdeck.herokuapp.com](https://scrumdeck.herokuapp.com).
+
 ## Requirements
 - Node.js 7 or later
 

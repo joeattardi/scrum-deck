@@ -34,6 +34,7 @@ import { CardPlaceholderComponent } from './card-placeholder/card-placeholder.co
 import { HomeComponent } from './home/home.component';
 import { NewGameComponent } from './new-game/new-game.component';
 import { LoaderComponent } from './loader/loader.component';
+import { NotFoundComponent } from './not-found/not-found.component';
 
 @NgModule({
   declarations: [
@@ -45,7 +46,8 @@ import { LoaderComponent } from './loader/loader.component';
     CardPlaceholderComponent,
     HomeComponent,
     NewGameComponent,
-    LoaderComponent
+    LoaderComponent,
+    NotFoundComponent
   ],
   imports: [
     BrowserModule,

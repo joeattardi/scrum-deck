@@ -5,6 +5,7 @@ import { NotificationsService } from 'angular2-notifications';
 import { Observable } from 'rxjs/Observable';
 import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs/Subscription';
+import { Title } from '@angular/platform-browser';
 
 import { AppState } from '../types';
 import { SocketService } from '../socket.service';
@@ -27,17 +28,17 @@ export class GameComponent implements OnDestroy, OnInit {
   players: any[];
   playerId: string;
   gameId: string;
+  gameName: string;
   baseUrl: string;
 
   clipboard: any;
 
   gameName$: Observable<string>;
-  gameId$: Observable<string>;
 
   private subscriptions: Subscription[] = [];
 
   constructor(private socketService: SocketService, private store: Store<AppState>, private route: ActivatedRoute,
-    private router: Router, private notificationsService: NotificationsService) {
+    private router: Router, private notificationsService: NotificationsService, private title: Title) {
     this.subscriptions.push(store.select((state: AppState) => state.players)
       .subscribe((players: any[]) => {
         this.players = players;
@@ -65,7 +66,11 @@ export class GameComponent implements OnDestroy, OnInit {
         this.gameId = gameId;
       }));
 
-    this.gameName$ = store.select((state: AppState) => state.gameName);
+    this.subscriptions.push(store.select((state: AppState) => state.gameName)
+      .subscribe((gameName: string) => {
+        this.gameName = gameName;
+        this.title.setTitle(`${gameName} | ScrumDeck`);
+      }));
   }
 
   ngOnInit() {

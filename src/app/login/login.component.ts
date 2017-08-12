@@ -1,6 +1,7 @@
 import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
+import { Title } from '@angular/platform-browser';
 
 // tslint:disable-next-line: no-unused-variable
 import { AppState } from '../types';
@@ -19,10 +20,12 @@ export class LoginComponent implements OnInit {
   loading = false;
 
   constructor(private router: Router, private route: ActivatedRoute,
-    private store: Store<AppState>, private socketService: SocketService) { }
+    private store: Store<AppState>, private socketService: SocketService,
+    private title: Title) { }
 
   ngOnInit() {
     this.gameId = this.route.snapshot.paramMap.get('id');
+    this.title.setTitle('Join Game | ScrumDeck');
   }
 
   submitForm(value) {

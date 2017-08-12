@@ -1,6 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
+import { Title } from '@angular/platform-browser';
 
 // tslint:disable-next-line: no-unused-variable
 import { AppState } from '../types';
@@ -13,7 +14,7 @@ import { SocketService } from '../socket.service';
   styleUrls: ['./new-game.component.scss']
 })
 export class NewGameComponent implements OnInit {
-  constructor(private router: Router, private store: Store<AppState>, private socketService: SocketService) { }
+  constructor(private router: Router, private store: Store<AppState>, private socketService: SocketService, private title: Title) { }
 
   @ViewChild('gameNameField') gameNameField: ElementRef;
 
@@ -26,6 +27,7 @@ export class NewGameComponent implements OnInit {
 
   ngOnInit() {
     this.gameNameField.nativeElement.focus();
+    this.title.setTitle('Start New Game | ScrumDeck');
   }
 
   submitForm(value) {

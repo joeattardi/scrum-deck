@@ -1,3 +1,4 @@
+import { ActivatedRoute, Router } from '@angular/router';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
@@ -11,22 +12,12 @@ import { CardComponent } from '../card/card.component';
 import { CardPlaceholderComponent } from '../card-placeholder/card-placeholder.component';
 import { DeckComponent } from '../deck/deck.component';
 import { GameComponent } from './game.component';
+import { LoaderComponent } from '../loader/loader.component';
 import { SocketService } from '../socket.service';
-
-// const state: AppState = {
-//   cardsVisible: false,
-//   playerId: 'abc123',
-//   playerName: 'Joe',
-//   players: [
-//     { id: 'abc123', name: 'Joe' },
-//     { id: 'def456', name: 'Bob' }
-//   ],
-//   phase: 'VOTING',
-//   votes: {}
-// };
 
 const state = {
   cardsVisible: new Subject(),
+  gameName: Observable.of('My Game'),
   playerId: new Subject(),
   playerName: new Subject(),
   players: new Subject(),
@@ -34,14 +25,26 @@ const state = {
   votes: new Subject()
 };
 
+const mockRouter = jasmine.createSpyObj('router', ['navigate']);
+
 const mockSocketService = {
-  init() {
-  }
+  init() { },
+  joinGame: jasmine.createSpy('joinGame').and.returnValue(Promise.resolve())
 };
 
 const mockStore = {
   select(selectorFn) {
     return selectorFn(state);
+  }
+};
+
+const mockActivatedRoute = {
+  snapshot: {
+    paramMap: {
+      get() {
+        return 'asdf';
+      }
+    }
   }
 };
 
@@ -53,10 +56,12 @@ describe('Game Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [CardComponent, CardPlaceholderComponent, DeckComponent, GameComponent],
+      declarations: [CardComponent, CardPlaceholderComponent, DeckComponent, GameComponent, LoaderComponent],
       providers: [
         { provide: SocketService, useValue: mockSocketService },
-        { provide: Store, useValue: mockStore }
+        { provide: Store, useValue: mockStore },
+        { provide: ActivatedRoute, useValue: mockActivatedRoute },
+        { provide: Router, useValue: mockRouter }
       ]
     }).compileComponents();
   }));
@@ -75,6 +80,8 @@ describe('Game Component', () => {
     state.votes.next({});
     state.playerId.next('abc123');
     state.cardsVisible.next(false);
+
+    component.loading = false;
 
     fixture.detectChanges();
   });
@@ -95,6 +102,11 @@ describe('Game Component', () => {
     expect((<HTMLElement> participants[0]).innerText).toBe('Joe');
     expect((<HTMLElement> participants[1]).innerText).toBe('Bob');
     expect((<HTMLElement> participants[2]).innerText).toBe('Sam');
+  });
+
+  it('should show the game name', () => {
+    const gameTitleEl = el.querySelector('#game-container h1');
+    expect(gameTitleEl.innerHTML).toBe('My Game');
   });
 
   it('should render a player div for each player', () => {
@@ -118,5 +130,9 @@ describe('Game Component', () => {
     const votedEl = el.querySelector('#voted');
     const voteCard = votedEl.querySelector('app-card .value');
     expect(voteCard.innerHTML).toBe('5');
+  });
+
+  it('should join the game with the id from the route', () => {
+    expect(mockSocketService.joinGame).toHaveBeenCalledWith('asdf');
   });
 });

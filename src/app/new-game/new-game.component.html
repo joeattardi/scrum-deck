@@ -1,0 +1,28 @@
+<h1>Start New Game</h1>
+
+<form #form="ngForm" (ngSubmit)="submitForm(form.value)">
+  <div class="form-row"><label for="game-name">Game name</label></div>
+  <div class="form-row">
+    <input id="game-name" type="text" required autofocus
+           [(ngModel)]="model.gameName" name="gameName" #gameNameField #gameName="ngModel"
+           [class.error]="gameName.invalid && gameName.touched">
+    <div class="error-message" [hidden]="gameName.valid || gameName.untouched">
+      Please enter the game name.
+    </div>
+  </div>
+  <div class="form-row"><label for="player-name">Your name</label></div>
+  <div class="form-row">
+    <input id="player-name" type="text" required
+           [(ngModel)]="model.playerName" name="playerName" #playerName="ngModel"
+           [class.error]="playerName.invalid && playerName.touched">
+    <div class="error-message" [hidden]="playerName.valid || playerName.untouched">
+      Please enter your name.
+    </div>
+  </div>
+  <div class="form-row">
+    <button type="submit" [disabled]="!form.valid || loading">
+      <ng-container *ngIf="!loading">Start Game</ng-container>
+      <app-loader *ngIf="loading" size="1.25em" border="0.25em"></app-loader>
+    </button>
+  </div>
+</form>

@@ -1,4 +1,4 @@
-import { DummyAction, NewGameAction, PlayerLeftAction, SetGameStateAction, VoteAction } from '../actions';
+import { DummyAction, LeaveGameAction, NewGameAction, PlayerLeftAction, SetGameStateAction, VoteAction } from '../actions';
 import { voteReducer } from './vote';
 
 describe('Vote reducer', () => {
@@ -23,6 +23,8 @@ describe('Vote reducer', () => {
     };
     const newVotes = voteReducer(startVotes, new SetGameStateAction({
       cardsVisible: true,
+      gameId: 'lkgj',
+      gameName: 'My Game',
       playerId: 'adsf',
       playerName: 'Bill',
       players: [
@@ -67,5 +69,12 @@ describe('Vote reducer', () => {
       def456: '8'
     };
     expect(voteReducer(startVotes, new DummyAction())).toEqual(startVotes);
+  });
+
+  it('should clear the votes when leaving the game', () => {
+    const startVotes = {
+      abc123: '5'
+    };
+    expect(voteReducer(startVotes, new LeaveGameAction())).toEqual({});
   });
 });

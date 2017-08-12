@@ -1,5 +1,7 @@
 export interface AppState {
   cardsVisible: boolean;
+  gameId: string;
+  gameName: string;
   playerId: string;
   playerName: string;
   players: Player[];

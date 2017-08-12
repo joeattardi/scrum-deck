@@ -7,6 +7,7 @@ export function cardsVisibleReducer(state = false, action: Action) {
     case Actions.SHOW_CARDS:
       return true;
     case Actions.HIDE_CARDS:
+    case Actions.LEAVE_GAME:
       return false;
     case Actions.SET_GAME_STATE:
       return action.payload.cardsVisible;

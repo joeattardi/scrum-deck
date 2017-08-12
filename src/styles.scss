@@ -6,6 +6,15 @@ body {
   margin: 0;
 }
 
+.form-row {
+  margin-top: 0.5rem;
+
+  .error-message {
+    color: $error-color;
+    font-size: 0.85rem;
+  }
+}
+
 input {
   font-size: 1.5rem;
   border-radius: 3px;

@@ -9,6 +9,7 @@ export class CardComponent {
   @Input() value: string;
   @Input() flipped = false;
   @Input() inDeck = false;
+  @Input() back: string;
 
   @Output() cardClick = new EventEmitter<string>();
 

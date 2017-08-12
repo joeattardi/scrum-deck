@@ -1,4 +1,4 @@
-import { DummyAction, PlayerJoinedAction, PlayerLeftAction, SetGameStateAction } from '../actions';
+import { DummyAction, LeaveGameAction, PlayerJoinedAction, PlayerLeftAction, SetGameStateAction } from '../actions';
 import { playersReducer } from './players';
 
 describe('Players reducer', () => {
@@ -44,6 +44,8 @@ describe('Players reducer', () => {
     ];
     const newState = playersReducer(initialState, new SetGameStateAction({
       cardsVisible: true,
+      gameId: 'lkjg',
+      gameName: 'My Game',
       playerId: 'adsf',
       playerName: 'Bill',
       players: [
@@ -62,5 +64,10 @@ describe('Players reducer', () => {
   it('should leave the players unchanged on an unknown action', () => {
     const initialState = [{ id: 'abc123', name: 'Joe' }];
     expect(playersReducer(initialState, new DummyAction)).toEqual(initialState);
+  });
+
+  it('should clear the players when leaving the game', () => {
+    const initialState = [{ id: 'abc123', name: 'Joe' }];
+    expect(playersReducer(initialState, new LeaveGameAction())).toEqual([]);
   });
 });

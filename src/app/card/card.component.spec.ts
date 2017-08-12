@@ -33,6 +33,13 @@ describe('Card Component', () => {
     expect(valueEl.nativeElement.textContent).toBe('5');
   });
 
+  it('should display the given back value on the back', () => {
+    component.back = 'J';
+    fixture.detectChanges();
+
+    expect((<HTMLElement>el.querySelector('.back')).innerText.trim()).toBe('J');
+  });
+
   it('should have a class name of `card-{{value}}`', () => {
     component.value = '5';
     fixture.detectChanges();

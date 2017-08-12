@@ -17,10 +17,13 @@ import { GameComponent } from './game/game.component';
 
 import { appRoutes } from './app.routes';
 import { AuthGuard } from './auth-guard.service';
+import { LeaveGameGuard } from './leave-game-guard.service';
 import { SocketService } from './socket.service';
 
 import { cardsVisibleReducer } from './reducers/cards-visible';
 import { phaseReducer } from './reducers/phase';
+import { gameIdReducer } from './reducers/game-id';
+import { gameNameReducer } from './reducers/game-name';
 import { playerIdReducer } from './reducers/player-id';
 import { playerNameReducer } from './reducers/player-name';
 import { playersReducer } from './reducers/players';
@@ -28,6 +31,9 @@ import { voteReducer } from './reducers/vote';
 
 import { environment } from '../environments/environment';
 import { CardPlaceholderComponent } from './card-placeholder/card-placeholder.component';
+import { HomeComponent } from './home/home.component';
+import { NewGameComponent } from './new-game/new-game.component';
+import { LoaderComponent } from './loader/loader.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +42,10 @@ import { CardPlaceholderComponent } from './card-placeholder/card-placeholder.co
     DeckComponent,
     LoginComponent,
     GameComponent,
-    CardPlaceholderComponent
+    CardPlaceholderComponent,
+    HomeComponent,
+    NewGameComponent,
+    LoaderComponent
   ],
   imports: [
     BrowserModule,
@@ -46,6 +55,8 @@ import { CardPlaceholderComponent } from './card-placeholder/card-placeholder.co
     RouterModule.forRoot(appRoutes),
     StoreModule.forRoot({
       cardsVisible: cardsVisibleReducer,
+      gameId: gameIdReducer,
+      gameName: gameNameReducer,
       playerId: playerIdReducer,
       playerName: playerNameReducer,
       players: playersReducer,
@@ -54,7 +65,7 @@ import { CardPlaceholderComponent } from './card-placeholder/card-placeholder.co
     }),
     !environment.production ? StoreDevtoolsModule.instrument({ maxAge: 25 }) : []
   ],
-  providers: [AuthGuard, SocketService],
+  providers: [AuthGuard, LeaveGameGuard, SocketService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

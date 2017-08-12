@@ -17,6 +17,11 @@ header {
 
     h1 {
       margin: 0;
+
+      a {
+        color: #FFFFFF;
+        text-decoration: none;
+      }
     }
   }
 
@@ -27,10 +32,13 @@ header {
 
 #main-content {
   padding: 1rem;
+  max-width: 1000px;
+  margin: auto;
 }
 
 footer {
   border-top: 1px solid #CCCCCC;
   font-size: 0.75rem;
   padding: 0.5rem;
+  clear: both;
 }

@@ -1,9 +1,9 @@
 <header>
-  <img class="logo" src="/assets/logo.png">
-  <div id="header-content">
-    <h1>ScrumDeck</h1>
-    Estimation for remote teams
-  </div>
+    <a routerLink="/"><img class="logo" src="/assets/logo.png"></a>
+    <div id="header-content">
+      <h1><a routerLink="/">ScrumDeck</a></h1>
+      Estimation for remote teams
+    </div>
   <div id="player" *ngIf="playerName$ | async">
     <i class="fa fa-user-circle"></i> <span id="player-name">{{playerName$ | async}}</span>
   </div>

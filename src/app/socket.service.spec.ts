@@ -1,13 +1,19 @@
+import { Observable } from 'rxjs/Observable';
+
 import * as Actions from './actions';
 import { SocketService } from './socket.service';
 import * as socketConstants from '../../shared/socketConstants';
 
-const mockAuthService = <any>{
-  name: 'Joe'
+const state = {
+  gameId: Observable.of('asdf'),
+  playerName: Observable.of('Joe')
 };
 
 const mockStore = <any>{
-  dispatch: action => {}
+  dispatch(action) { },
+  select(selectorFn) {
+    return selectorFn(state);
+  }
 };
 
 const mockNotificationsService = <any>{
@@ -15,10 +21,13 @@ const mockNotificationsService = <any>{
   success: (title, message) => {}
 };
 
-const mockSocket = <any> { emit: (message, data) => {} };
+const mockSocket = <any> { 
+  emit(message, data) { },
+  disconnect() { }
+};
 
 describe('Socket Service', () => {
-  const socketService = new SocketService(mockAuthService, mockStore, mockNotificationsService);
+  const socketService = new SocketService(mockStore, mockNotificationsService);
   socketService.setSocket(mockSocket);
 
   beforeEach(() => {
@@ -26,10 +35,10 @@ describe('Socket Service', () => {
     spyOn(mockNotificationsService, 'info');
   });
 
-  it('should join the game after connecting', () => {
-    spyOn(mockSocket, 'emit');
-    socketService.handleConnection(mockSocket);
-    expect(mockSocket.emit).toHaveBeenCalledWith('join', 'Joe');
+  it('should disconnect the socket when leaving the game', () => {
+    spyOn(mockSocket, 'disconnect');
+    socketService.leaveGame();
+    expect(mockSocket.disconnect).toHaveBeenCalled();
   });
 
   it('should dispatch a SetPlayerIdAction when the player id is received', () => {
@@ -56,6 +65,8 @@ describe('Socket Service', () => {
   it('should dispatch a SetGameState action when receiving updated game state', () => {
     const gameState = {
       cardsVisible: false,
+      gameId: 'asdf',
+      gameName: 'My Game',
       playerId: 'abc123',
       playerName: 'Joe',
       players: [{ id: 'abc123', name: 'Joe' }],
@@ -101,7 +112,7 @@ describe('Socket Service', () => {
     spyOn(mockNotificationsService, 'success');
 
     socketService.castVote('5');
-    expect(mockSocket.emit).toHaveBeenCalledWith(socketConstants.VOTE, '5');
+    expect(mockSocket.emit).toHaveBeenCalledWith(socketConstants.VOTE, { gameId: 'asdf', vote: '5' });
     expect(mockNotificationsService.success).toHaveBeenCalledWith('Vote Cast', 'You voted 5');
   });
 
@@ -109,19 +120,7 @@ describe('Socket Service', () => {
     spyOn(mockSocket, 'emit');
 
     socketService.newGame();
-    expect(mockSocket.emit).toHaveBeenCalledWith(socketConstants.NEW_GAME);
+    expect(mockSocket.emit).toHaveBeenCalledWith(socketConstants.NEW_GAME, 'asdf');
     expect(mockNotificationsService.info).toHaveBeenCalledWith('New Game', 'Starting a new game');
-  });
-
-  it('should emit a SHOW_CARDS message when showing cards', () => {
-    spyOn(mockSocket, 'emit');
-    socketService.showCards();
-    expect(mockSocket.emit).toHaveBeenCalledWith(socketConstants.SHOW_CARDS);
-  });
-
-  it('should emit a HIDE_CARDS message when hiding cards', () => {
-    spyOn(mockSocket, 'emit');
-    socketService.hideCards();
-    expect(mockSocket.emit).toHaveBeenCalledWith(socketConstants.HIDE_CARDS);
   });
 });

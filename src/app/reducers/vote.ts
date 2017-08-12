@@ -13,6 +13,7 @@ export function voteReducer(state = {}, action) {
     case Actions.PLAYER_LEFT:
       return omit(state, action.payload.id);
     case Actions.NEW_GAME:
+    case Actions.LEAVE_GAME:
       return {};
     default:
       return state;

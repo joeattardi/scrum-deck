@@ -1,4 +1,4 @@
-import { DummyAction, SetPlayerIdAction } from '../actions';
+import { DummyAction, LeaveGameAction, SetPlayerIdAction } from '../actions';
 import { playerIdReducer } from './player-id';
 
 describe('Player ID reducer', () => {
@@ -12,5 +12,9 @@ describe('Player ID reducer', () => {
 
   it('should leave the player id unchanged on an unknown action', () => {
     expect(playerIdReducer('abc123', new DummyAction())).toBe('abc123');
+  });
+
+  it('should clear the player id when leaving the game', () => {
+    expect(playerIdReducer('abc123', new LeaveGameAction())).toBe(null);
   });
 });

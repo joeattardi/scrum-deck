@@ -1,3 +1,4 @@
+import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
@@ -17,15 +18,18 @@ export class GameComponent implements OnDestroy, OnInit {
   allVoted = false;
   myVote: string;
   voted = false;
+  loading = true;
 
   cardsVisible = false;
   votes: Votes;
   players: any[];
   playerId: string;
 
+  gameName$: Observable<string>;
+
   private subscriptions: Subscription[] = [];
 
-  constructor(private socketService: SocketService, private store: Store<AppState>) {
+  constructor(private socketService: SocketService, private store: Store<AppState>, private route: ActivatedRoute, private router: Router) {
     this.subscriptions.push(store.select((state: AppState) => state.players)
       .subscribe((players: any[]) => {
         this.players = players;
@@ -47,10 +51,19 @@ export class GameComponent implements OnDestroy, OnInit {
       .subscribe((cardsVisible: boolean) => {
         this.cardsVisible = cardsVisible;
       }));
+
+    this.gameName$ = store.select((state: AppState) => state.gameName);
   }
 
   ngOnInit() {
-    this.socketService.init();
+    this.socketService.joinGame(this.route.snapshot.paramMap.get('id'))
+      .then(() => {
+        this.loading = false;
+      })
+      .catch(err => {
+        alert(err);
+        this.router.navigate(['/']);
+      });
   }
 
   ngOnDestroy() {

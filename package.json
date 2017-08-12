@@ -9,8 +9,9 @@
     "heroku-postbuild": "ng build --prod --aot",
     "build": "ng build",
     "build:aot": "ng build --prod --aot",
-    "test": "ng test --single-run",
+    "test": "ng test --single-run && npm run test:server",
     "test:start": "ng test",
+    "test:server": "jasmine JASMINE_CONFIG_PATH=jasmine.json",
     "lint": "ng lint --type-check",
     "e2e": "ng e2e"
   },
@@ -51,6 +52,7 @@
     "@types/node": "~6.0.60",
     "codelyzer": "~3.0.1",
     "concurrently": "^3.5.0",
+    "jasmine": "^2.7.0",
     "jasmine-core": "~2.6.2",
     "jasmine-spec-reporter": "~4.1.0",
     "karma": "~1.7.0",

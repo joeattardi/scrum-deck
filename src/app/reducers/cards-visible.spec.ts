@@ -1,4 +1,4 @@
-import { DummyAction, HideCardsAction, SetGameStateAction, ShowCardsAction } from '../actions';
+import { DummyAction, HideCardsAction, LeaveGameAction, SetGameStateAction, ShowCardsAction } from '../actions';
 import { cardsVisibleReducer } from './cards-visible';
 
 describe('Cards Visible reducer', () => {
@@ -16,9 +16,15 @@ describe('Cards Visible reducer', () => {
     expect(cardsVisibleReducer(true, new HideCardsAction())).toBe(false);
   });
 
+  it('should hide the cards when leaving the game', () => {
+    expect(cardsVisibleReducer(true, new LeaveGameAction())).toBe(false);
+  });
+
   it('should set the card visibility from the game state', () => {
     const state = {
       cardsVisible: true,
+      gameId: 'asdf',
+      gameName: 'My Game',
       playerId: 'abc123',
       playerName: 'Joe',
       players: [],

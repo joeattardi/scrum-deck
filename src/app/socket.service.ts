@@ -15,18 +15,23 @@ const logger = debug('ScrumDeck:SocketService');
 export class SocketService {
   private socket: SocketIOClient.Socket;
   private playerName: string;
+  private gameId: string;
 
   constructor(private store: Store<AppState>, private notificationsService: NotificationsService) {
     store.select((state: AppState) => state.playerName)
       .subscribe((playerName: string) => {
         this.playerName = playerName;
       });
+
+    store.select((state: AppState) => state.gameId)
+      .subscribe((gameId: string) => {
+        this.gameId = gameId;
+      });
    }
 
   init() {
     this.setSocket(io('/'));
 
-    this.socket.on(socketConstants.CONNECT, () => this.handleConnection(this.socket));
     this.socket.on(socketConstants.PLAYER_ID, playerId => this.handlePlayerId(playerId));
     this.socket.on(socketConstants.PLAYER_JOINED, player => this.handlePlayerJoined(player));
     this.socket.on(socketConstants.PLAYER_LEFT, player => this.handlePlayerLeft(player));
@@ -39,11 +44,6 @@ export class SocketService {
 
   setSocket(socket: SocketIOClient.Socket) {
     this.socket = socket;
-  }
-
-  handleConnection(socket) {
-    logger('Connected to socket server');
-    socket.emit(socketConstants.JOIN, this.playerName);
   }
 
   handlePlayerId(playerId) {
@@ -97,22 +97,41 @@ export class SocketService {
   castVote(vote) {
     logger(`Sending vote for ${this.playerName}: ${vote}`);
     this.notificationsService.success('Vote Cast', `You voted ${vote}`);
-    this.socket.emit(socketConstants.VOTE, vote);
+    this.socket.emit(socketConstants.VOTE, { gameId: this.gameId, vote });
   }
 
   newGame() {
     logger('Sending request for new game');
     this.notificationsService.info('New Game', 'Starting a new game');
-    this.socket.emit(socketConstants.NEW_GAME);
+    this.socket.emit(socketConstants.NEW_GAME, this.gameId);
   }
 
-  showCards() {
-    logger('Sending signal to show cards');
-    this.socket.emit(socketConstants.SHOW_CARDS);
+  leaveGame() {
+    logger('Leaving game');
+    this.socket.disconnect();
+    logger('Disconnected from socket server');
   }
 
-  hideCards() {
-    logger('Sending signal to hide cards');
-    this.socket.emit(socketConstants.HIDE_CARDS);
+  createGame(gameName: string) {
+    return new Promise((resolve, reject) => {
+      this.socket.emit(socketConstants.CREATE_GAME, gameName);
+      this.socket.once(socketConstants.GAME_ID, gameId => {
+        logger(`Got new game id: ${gameId}`);
+        this.store.dispatch(new Actions.SetGameIdAction(gameId));
+        resolve(gameId);
+      });
+    });
+  }
+
+  joinGame(gameId: string) {
+    return new Promise((resolve, reject) => {
+      this.socket.emit(socketConstants.JOIN, { gameId, name: this.playerName }, result => {
+        if (result === socketConstants.GAME_NOT_FOUND) {
+          reject('Game not found');
+        } else {
+          resolve();
+        }
+      });
+    });
   }
 }

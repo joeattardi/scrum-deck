@@ -11,6 +11,8 @@ export function playersReducer(state: Player[] = [], action: Action) {
       return state.filter(player => player.id !== action.payload.id);
     case Actions.SET_GAME_STATE:
       return action.payload.players;
+    case Actions.LEAVE_GAME:
+      return [];
     default:
       return state;
   }

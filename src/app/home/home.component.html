@@ -1,0 +1,18 @@
+<img id="mockup" src="/assets/wireframe.png" alt="Screenshot">
+
+<h1>Welcome to ScrumDeck!</h1>
+
+<section>
+  <p>
+    ScrumDeck is an online estimation tool similar to Planning Poker® that allows remotely
+    distributed teams to estimate point values for stories.
+  </p>
+
+  <div id="actions">
+    <div id="start-new-game"><button (click)="startNewGame()">Start New Game</button></div>
+    <div id="join-game">
+      <input type="text" size="10" #gameId placeholder="Game ID">
+      <button (click)="joinGame(gameId.value)">Join Game</button>
+    </div>
+  </div>
+</section>

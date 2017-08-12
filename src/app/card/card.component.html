@@ -4,7 +4,8 @@
       <div class="value">{{value}}</div>
     </div>
     <div class="back">
-      S
+      <ng-container *ngIf="!back">S</ng-container>
+      <ng-container *ngIf="back">{{back}}</ng-container>
     </div>
   </div>
 </div>

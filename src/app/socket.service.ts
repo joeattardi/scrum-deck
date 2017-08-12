@@ -7,7 +7,6 @@ import { NotificationsService } from 'angular2-notifications';
 import * as Actions from './actions';
 import * as socketConstants from '../../shared/socketConstants';
 import { AppState } from './types';
-import { Vote } from './types';
 
 const logger = debug('ScrumDeck:SocketService');
 

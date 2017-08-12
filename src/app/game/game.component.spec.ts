@@ -1,12 +1,12 @@
 import { ActivatedRoute, Router } from '@angular/router';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { By } from '@angular/platform-browser';
-import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
+import { DebugElement } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
 import { Store } from '@ngrx/store';
 import { Subject } from 'rxjs/Subject';
 
+// tslint:disable-next-line: no-unused-variable
 import { AppState } from '../types';
 import { CardComponent } from '../card/card.component';
 import { CardPlaceholderComponent } from '../card-placeholder/card-placeholder.component';

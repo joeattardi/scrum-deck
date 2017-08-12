@@ -6,7 +6,7 @@ import { Subscription } from 'rxjs/Subscription';
 
 import { AppState } from '../types';
 import { SocketService } from '../socket.service';
-import { HideCardsAction, NewGameAction, ShowCardsAction, VoteAction } from '../actions';
+import { NewGameAction, VoteAction } from '../actions';
 import { Votes } from '../types';
 
 @Component({

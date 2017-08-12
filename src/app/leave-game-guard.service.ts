@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 
 import { AppState } from './types';
+// tslint:disable-next-line: no-unused-variable
 import { GameComponent } from './game/game.component';
 import { LeaveGameAction } from './actions';
 import { SocketService } from './socket.service';

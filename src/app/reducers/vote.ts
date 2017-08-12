@@ -4,7 +4,7 @@ import * as Actions from '../actions';
 
 type Action = Actions.All;
 
-export function voteReducer(state = {}, action) {
+export function voteReducer(state = {}, action: Action) {
   switch (action.type) {
     case Actions.VOTE:
       return Object.assign({}, state, { [action.payload.player]: action.payload.vote});

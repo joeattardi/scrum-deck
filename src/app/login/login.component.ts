@@ -2,6 +2,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 
+// tslint:disable-next-line: no-unused-variable
 import { AppState } from '../types';
 import { SetGameIdAction, SetPlayerNameAction } from '../actions';
 import { SocketService } from '../socket.service';

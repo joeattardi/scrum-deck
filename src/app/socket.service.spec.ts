@@ -21,7 +21,7 @@ const mockNotificationsService = <any>{
   success: (title, message) => {}
 };
 
-const mockSocket = <any> { 
+const mockSocket = <any> {
   emit(message, data) { },
   disconnect() { }
 };

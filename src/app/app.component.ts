@@ -21,6 +21,6 @@ export class AppComponent {
   };
 
   constructor(private store: Store<AppState>) {
-    this.playerName$ = store.select((state: AppState) => state.playerName);
+    this.playerName$ = this.store.select((state: AppState) => state.playerName);
   }
 }

@@ -10,38 +10,38 @@ function logGameState(gameState) {
   logger.debug(`(${gameState.gameName}) Game state: ${JSON.stringify(gameState)}`);
 }
 
-exports.handleJoin = function handleJoin(socket, data, callback) {
-  logger.debug(`(socket) Received ${socketConstants.JOIN}, data: ${JSON.stringify(data)}`);
-  const gameState = gameRegistry.getGame(data.gameId);
+exports.handleJoin = function handleJoin(socket, { name, gameId }, callback) {
+  logger.debug(`(socket) Received ${socketConstants.JOIN}, name: ${name}, gameId: ${gameId}`);
+  const gameState = gameRegistry.getGame(gameId);
 
   if (gameState) {
-    logger.info(`Player "${data.name}" is joining game "${gameState.gameName}"`);
+    logger.info(`Player "${name}" is joining game "${gameState.gameName}"`);
 
     const playerId = shortid.generate();
-    logger.debug(`Generated player ID for "${data.name}": ${playerId}`);
+    logger.debug(`Generated player ID for "${name}": ${playerId}`);
 
-    playerRegistry.addPlayer(playerId, data.name, data.gameId, socket);
+    playerRegistry.addPlayer(playerId, name, gameId, socket);
     playerRegistry.logPlayers();
     
-    gameState.players.push({ id: playerId, name: data.name });
+    gameState.players.push({ id: playerId, name: name });
 
     socket.join(gameState.gameId);
 
     logger.debug(`(${gameState.gameName}) Hiding cards`);
     gameState.cardsVisible = false;
-    logger.debug(`(socket) Sending ${socketConstants.HIDE_CARDS} to ${data.gameId}`);
-    socket.to(data.gameId).emit(socketConstants.HIDE_CARDS);
+    logger.debug(`(socket) Sending ${socketConstants.HIDE_CARDS} to ${gameId}`);
+    socket.to(gameId).emit(socketConstants.HIDE_CARDS);
 
     logGameState(gameState);
 
-    socket.to(data.gameId).emit(socketConstants.PLAYER_JOINED, { id: playerId, name: data.name });
+    socket.to(gameId).emit(socketConstants.PLAYER_JOINED, { id: playerId, name: name });
     socket.emit(socketConstants.PLAYER_ID, playerId);
     socket.emit(socketConstants.GAME_STATE, gameState);
     callback({
       baseUrl: process.env.BASE_URL
     });
   } else {
-    logger.debug(`Game ${data.gameId} not found`);
+    logger.debug(`Game ${gameId} not found`);
     callback(socketConstants.GAME_NOT_FOUND);
   }
 };
@@ -81,19 +81,19 @@ exports.handleDisconnect = function handleDisconnect(socket) {
   }
 };
 
-exports.handleVote = function handleVote(io, socket, voteData) {
-  logger.debug(`(socket) Received ${socketConstants.VOTE}, voteData:`, voteData);
+exports.handleVote = function handleVote(io, socket, { gameId, vote }) {
+  logger.debug(`(socket) Received ${socketConstants.VOTE}, gameId: ${gameId}, vote: ${vote}`);
   
   const player = playerRegistry.getPlayer(socket);
-  const gameState = gameRegistry.getGame(voteData.gameId);
-  logger.debug(`(${gameState.gameName}) Player "${player.name}" voted ${voteData.vote}`);
+  const gameState = gameRegistry.getGame(gameId);
+  logger.debug(`(${gameState.gameName}) Player "${player.name}" voted ${vote}`);
 
-  gameState.votes[player.id] = voteData.vote;
+  gameState.votes[player.id] = vote;
   socket.to(gameState.gameId).emit(socketConstants.VOTE, {
     player: {
       id: player.id,
       name: player.name
-    }, vote: voteData.vote });
+    }, vote });
 
   if (Object.keys(gameState.votes).length === gameState.players.length) {
     logger.debug(`(${gameState.gameName}) All players have voted`);

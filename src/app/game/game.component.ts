@@ -82,9 +82,9 @@ export class GameComponent implements OnDestroy, OnInit {
     }
 
     this.socketService.joinGame(this.route.snapshot.paramMap.get('id'))
-      .then((baseUrl: string) => {
+      .then((result: any) => {
         this.loading = false;
-        this.baseUrl = baseUrl;
+        this.baseUrl = result.baseUrl;
       })
       .catch(err => {
         alert(err);

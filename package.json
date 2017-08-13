@@ -9,6 +9,7 @@
     "heroku-postbuild": "ng build --prod --aot",
     "build": "ng build",
     "build:aot": "ng build --prod --aot",
+    "precommit": "npm run lint && npm test && npm run build:aot",
     "test": "ng test --single-run && npm run test:server",
     "test:start": "ng test",
     "test:server": "jasmine JASMINE_CONFIG_PATH=jasmine.json",

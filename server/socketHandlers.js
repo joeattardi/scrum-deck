@@ -1,4 +1,3 @@
-const { pick } = require('lodash');
 const shortid = require('shortid');
 
 const gameRegistry = require('./gameRegistry');
@@ -22,8 +21,8 @@ exports.handleJoin = function handleJoin(socket, { name, gameId }, callback) {
 
     playerRegistry.addPlayer(playerId, name, gameId, socket);
     playerRegistry.logPlayers();
-    
-    gameState.players.push({ id: playerId, name: name });
+
+    gameState.players.push({ id: playerId, name });
 
     socket.join(gameState.gameId);
 
@@ -34,8 +33,8 @@ exports.handleJoin = function handleJoin(socket, { name, gameId }, callback) {
 
     logGameState(gameState);
 
-    socket.to(gameId).emit(socketConstants.PLAYER_JOINED, { id: playerId, name: name });
-    
+    socket.to(gameId).emit(socketConstants.PLAYER_JOINED, { id: playerId, name });
+
     callback({
       baseUrl: process.env.BASE_URL,
       playerId,
@@ -84,7 +83,7 @@ exports.handleDisconnect = function handleDisconnect(socket) {
 
 exports.handleVote = function handleVote(io, socket, { gameId, vote }) {
   logger.debug(`(socket) Received ${socketConstants.VOTE}, gameId: ${gameId}, vote: ${vote}`);
-  
+
   const player = playerRegistry.getPlayer(socket);
   const gameState = gameRegistry.getGame(gameId);
   logger.debug(`(${gameState.gameName}) Player "${player.name}" voted ${vote}`);
@@ -94,7 +93,9 @@ exports.handleVote = function handleVote(io, socket, { gameId, vote }) {
     player: {
       id: player.id,
       name: player.name
-    }, vote });
+    },
+    vote
+  });
 
   if (Object.keys(gameState.votes).length === gameState.players.length) {
     logger.debug(`(${gameState.gameName}) All players have voted`);
@@ -106,7 +107,7 @@ exports.handleVote = function handleVote(io, socket, { gameId, vote }) {
 
 exports.handleNewGame = function handleNewGame(io, socket, gameId) {
   logger.debug(`(socket) Received ${socketConstants.NEW_GAME}, ${gameId}`);
-  
+
   const player = playerRegistry.getPlayer(socket);
   const gameState = gameRegistry.getGame(gameId);
   logger.info(`(${gameState.gameName}) Player "${player.name}" started a new round`);

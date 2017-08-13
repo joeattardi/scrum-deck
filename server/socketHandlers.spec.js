@@ -53,7 +53,7 @@ describe('Socket Handlers', () => {
     expect(socket.to).toHaveBeenCalledWith(gameId);
     expect(gameEmit).toHaveBeenCalledWith(socketConstants.HIDE_CARDS);
     expect(gameEmit).toHaveBeenCalledWith(socketConstants.PLAYER_JOINED, { id: 'abc123', name: 'Joe' });
-    expect(callback).toHaveBeenCalledWith({ 
+    expect(callback).toHaveBeenCalledWith({
       baseUrl: 'http://localhost:9000',
       playerId: 'abc123',
       gameState: game
@@ -61,9 +61,6 @@ describe('Socket Handlers', () => {
   });
 
   it('should send an error when joining a game id that does not exist', () => {
-    const game = gameRegistry.createGame('My Game');
-    const gameId = game.gameId;
-
     spyOn(playerRegistry, 'addPlayer').and.callThrough();
     spyOn(shortid, 'generate').and.returnValue('abc123');
 

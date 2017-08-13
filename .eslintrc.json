@@ -1,0 +1,10 @@
+{
+    "extends": "airbnb-base",
+    "env": {
+        "node": true,
+        "jasmine": true
+    },
+    "rules": {
+        "comma-dangle": "off"
+    }
+}

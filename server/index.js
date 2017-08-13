@@ -17,11 +17,13 @@ app.get('*', (req, res) => {
 
 const port = process.env.PORT || 9000;
 
+/* eslint-disable no-console */
 console.log('##############################################################');
-console.log(`ScrumDeck ${pkg.version}`)
+console.log(`ScrumDeck ${pkg.version}`);
 console.log('Copyright (c) 2017 Joe Attardi');
 console.log('Licensed under the terms of the MIT License');
 console.log('##############################################################');
+/* eslint-enable no-console */
 
 logger.debug(`Base URL: ${process.env.BASE_URL}`);
 

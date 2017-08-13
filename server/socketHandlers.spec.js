@@ -18,10 +18,11 @@ describe('Socket Handlers', () => {
     spyOn(shortid, 'generate').and.returnValue('abc123');
     spyOn(gameRegistry, 'createGame').and.callThrough();
     const socket = jasmine.createSpyObj('socket', ['emit']);
-    socketHandlers.handleCreateGame(socket, 'My Game');
+    const callback = jasmine.createSpy();
+    socketHandlers.handleCreateGame(socket, 'My Game', callback);
 
     expect(gameRegistry.createGame).toHaveBeenCalledWith('My Game');
-    expect(socket.emit).toHaveBeenCalledWith(socketConstants.GAME_ID, 'abc123');
+    expect(callback).toHaveBeenCalledWith('abc123');
   });
 
   it('should handle a player joining a game', () => {
@@ -52,9 +53,11 @@ describe('Socket Handlers', () => {
     expect(socket.to).toHaveBeenCalledWith(gameId);
     expect(gameEmit).toHaveBeenCalledWith(socketConstants.HIDE_CARDS);
     expect(gameEmit).toHaveBeenCalledWith(socketConstants.PLAYER_JOINED, { id: 'abc123', name: 'Joe' });
-    expect(socket.emit).toHaveBeenCalledWith(socketConstants.PLAYER_ID, 'abc123');
-    expect(socket.emit).toHaveBeenCalledWith(socketConstants.GAME_STATE, game);
-    expect(callback).toHaveBeenCalledWith({ baseUrl: 'http://localhost:9000' });
+    expect(callback).toHaveBeenCalledWith({ 
+      baseUrl: 'http://localhost:9000',
+      playerId: 'abc123',
+      gameState: game
+    });
   });
 
   it('should send an error when joining a game id that does not exist', () => {

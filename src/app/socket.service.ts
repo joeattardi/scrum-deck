@@ -31,10 +31,8 @@ export class SocketService {
   init() {
     this.setSocket(io('/'));
 
-    this.socket.on(socketConstants.PLAYER_ID, playerId => this.handlePlayerId(playerId));
     this.socket.on(socketConstants.PLAYER_JOINED, player => this.handlePlayerJoined(player));
     this.socket.on(socketConstants.PLAYER_LEFT, player => this.handlePlayerLeft(player));
-    this.socket.on(socketConstants.GAME_STATE, state => this.handleGameState(state));
     this.socket.on(socketConstants.VOTE, vote => this.handleVote(vote));
     this.socket.on(socketConstants.NEW_GAME, () => this.handleNewGame());
     this.socket.on(socketConstants.SHOW_CARDS, () => this.handleShowCards());
@@ -43,11 +41,6 @@ export class SocketService {
 
   setSocket(socket: SocketIOClient.Socket) {
     this.socket = socket;
-  }
-
-  handlePlayerId(playerId) {
-    logger(`Got my player id: ${playerId}`);
-    this.store.dispatch(new Actions.SetPlayerIdAction(playerId));
   }
 
   handlePlayerJoined(player) {
@@ -60,11 +53,6 @@ export class SocketService {
     logger(`Received: Player ${player.name} left`);
     this.notificationsService.info('Player Left', `${player.name} left the game`);
     this.store.dispatch(new Actions.PlayerLeftAction(player));
-  }
-
-  handleGameState(state) {
-    logger('Got game state:', state);
-    this.store.dispatch(new Actions.SetGameStateAction(state));
   }
 
   handleVote(vote) {
@@ -113,8 +101,7 @@ export class SocketService {
 
   createGame(gameName: string) {
     return new Promise((resolve, reject) => {
-      this.socket.emit(socketConstants.CREATE_GAME, gameName);
-      this.socket.once(socketConstants.GAME_ID, gameId => {
+      this.socket.emit(socketConstants.CREATE_GAME, gameName, gameId => {
         logger(`Got new game id: ${gameId}`);
         this.store.dispatch(new Actions.SetGameIdAction(gameId));
         resolve(gameId);
@@ -128,9 +115,13 @@ export class SocketService {
         if (result === socketConstants.GAME_NOT_FOUND) {
           reject('Game not found');
         } else {
-          resolve({
-            baseUrl: result.baseUrl
-          });
+          resolve(result);
+
+          logger(`Got my player id: ${result.playerId}`);
+          this.store.dispatch(new Actions.SetPlayerIdAction(result.playerId));
+
+          logger('Got game state:', result.gameState);
+          this.store.dispatch(new Actions.SetGameStateAction(result.gameState));
         }
       });
     });

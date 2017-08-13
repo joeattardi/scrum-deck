@@ -13,7 +13,7 @@ exports.init = function init(expressServer) {
     logger.debug('(socket) New incoming socket connection');
 
     socket.on(socketConstants.JOIN, (data, callback) => socketHandlers.handleJoin(socket, data, callback));
-    socket.on(socketConstants.CREATE_GAME, gameName => socketHandlers.handleCreateGame(socket, gameName));
+    socket.on(socketConstants.CREATE_GAME, (gameName, callback) => socketHandlers.handleCreateGame(socket, gameName, callback));
     socket.on(socketConstants.DISCONNECT, () => socketHandlers.handleDisconnect(socket));
     socket.on(socketConstants.VOTE, voteData => socketHandlers.handleVote(io, socket, voteData));
     socket.on(socketConstants.NEW_GAME, gameId => socketHandlers.handleNewGame(io, socket, gameId));

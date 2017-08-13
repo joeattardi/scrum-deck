@@ -41,11 +41,6 @@ describe('Socket Service', () => {
     expect(mockSocket.disconnect).toHaveBeenCalled();
   });
 
-  it('should dispatch a SetPlayerIdAction when the player id is received', () => {
-    socketService.handlePlayerId('abc123');
-    expect(mockStore.dispatch).toHaveBeenCalledWith(new Actions.SetPlayerIdAction('abc123'));
-  });
-
   it('should dispatch a PlayerJoinedAction and send a notification when a new player joins', () => {
     const player = { id: 'abc123', name: 'Joe' };
     socketService.handlePlayerJoined(player);
@@ -60,21 +55,6 @@ describe('Socket Service', () => {
 
     expect(mockStore.dispatch).toHaveBeenCalledWith(new Actions.PlayerLeftAction(player));
     expect(mockNotificationsService.info).toHaveBeenCalledWith('Player Left', 'Joe left the game');
-  });
-
-  it('should dispatch a SetGameState action when receiving updated game state', () => {
-    const gameState = {
-      cardsVisible: false,
-      gameId: 'asdf',
-      gameName: 'My Game',
-      playerId: 'abc123',
-      playerName: 'Joe',
-      players: [{ id: 'abc123', name: 'Joe' }],
-      phase: 'VOTING',
-      votes: {}
-    };
-    socketService.handleGameState(gameState);
-    expect(mockStore.dispatch).toHaveBeenCalledWith(new Actions.SetGameStateAction(gameState));
   });
 
   it('should dispatch a VoteAction and send a notification when a player votes', () => {

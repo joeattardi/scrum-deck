@@ -35,10 +35,11 @@ exports.handleJoin = function handleJoin(socket, { name, gameId }, callback) {
     logGameState(gameState);
 
     socket.to(gameId).emit(socketConstants.PLAYER_JOINED, { id: playerId, name: name });
-    socket.emit(socketConstants.PLAYER_ID, playerId);
-    socket.emit(socketConstants.GAME_STATE, gameState);
+    
     callback({
-      baseUrl: process.env.BASE_URL
+      baseUrl: process.env.BASE_URL,
+      playerId,
+      gameState
     });
   } else {
     logger.debug(`Game ${gameId} not found`);
@@ -46,12 +47,12 @@ exports.handleJoin = function handleJoin(socket, { name, gameId }, callback) {
   }
 };
 
-exports.handleCreateGame = function handleCreateGame(socket, gameName) {
+exports.handleCreateGame = function handleCreateGame(socket, gameName, callback) {
   const gameState = gameRegistry.createGame(gameName);
   logger.info(`New game created: "${gameName}" with id ${gameState.gameId}`);
   logger.debug(`${gameRegistry.getGameCount()} active games`);
   logger.debug(`(socket) Sending ${socketConstants.GAME_ID}: ${gameState.gameId}`);
-  socket.emit(socketConstants.GAME_ID, gameState.gameId);
+  callback(gameState.gameId);
 };
 
 exports.handleDisconnect = function handleDisconnect(socket) {

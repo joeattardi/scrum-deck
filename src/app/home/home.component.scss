@@ -20,3 +20,15 @@ section {
   display: flex;
   justify-content: center;
 }
+
+@media screen and (max-width: 900px) {
+  #mockup {
+    width: 250px;
+  }
+}
+
+@media screen and (max-width: 800px) {
+  #mockup {
+    display: none;
+  }
+}
